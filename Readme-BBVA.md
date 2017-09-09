@@ -14,8 +14,12 @@ CRONOLOGÍA DE LA PRÁCTICA:
   7.2.- Copiamos las carpetas etc, usr y el fichero "Dockerfile" a /home/alumno/gitlocal/Polymer/BBVA-Tech-Uni-Blog
   7.3.- Modificamos el fichero "Dockerfile" para que copie nuestros estáticos de la carpeta build/default (generada con polymer build --name default) y para que exponga por el puerto 8082
   7.4.- Desde /home/alumno/gitlocal/Polymer/BBVA-Tech-Uni-Blog creamos el contenedor:
-            sudo docker build -t yelpcamp
+            sudo docker build -t yelpcamp .
   7.5.- Hacemos correr el docker:
             sudo docker run -P --network="host" yelpcamp
   7.6.- Comprobamos que funciona desde varios navegadores: http://localhost:8082
-8.- Subimos los cambios al repositorio Git.
+8.- Subimos los cambios al repositorio Git.Subimos los cambios al repositorio Git.
+9.- Crear elemento all-campings
+  9.1.- Instalar componente iron-ajax
+            bower install iron-ajax --save
+10.- Subimos los cambios al repositorio Git.

@@ -1,0 +1,120 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+
+<!-- needed to return elements from this pages -->
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="all-campings">
+  <template>
+    <!-- Bootstrap css added here in order to works in all browsers -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- custom styles -->
+    <style include="shared-styles">
+      :host {
+          display: block;
+          padding: 10px;
+      }
+      .thumbnail img {
+          width: 100%;
+      }
+
+      .thumbnail {
+          padding: 0;
+      }
+
+      .thumbnail .caption-full {
+          padding: 9px;
+      }
+
+    </style>
+    <!-- <p>Connected!!</p> -->
+    <!-- Ajax section to recover data from mongoDB vía API -->
+    <iron-ajax
+      auto
+      id="allCampingsAjax"
+      url ='https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds'
+      params='{"apiKey":"qpnQ2vCoFR8HMb_cf0vFfyP0B99yUKGL"}'
+      handle-as="json"
+      method="GET"
+      content-type="application/json"
+      on-response="handlePosts">
+    </iron-ajax>
+
+    <!-- Main content -->
+    <div class="container">
+        <header class="card">
+            <div class="container">
+                <h1>Welcome to YelpCamp!</h1>
+                <p>View our hand-picked campgrounds from all over the world</p>
+                <p>
+                    <a class="btn btn-primary btn-lg" href="/new-camping" on-click="resetCamping">Add New Campground</a>
+                    <a class="btn btn-primary btn-lg" on-click="getPosts" href="/all-campings">Refresh</a>
+                </p>
+            </div>
+        </header>
+        <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+          <!-- show all the post from mongoDB, stored in "posts" array -->
+            <template is="dom-repeat" items="[[posts]]">
+                <div class="col-md-3 col-sm-6">
+                    <div class="thumbnail">
+                        <img src="[[item.image]]">
+                        <h1>[[item.name]]</h1>
+                        <div class="caption">
+                            <h4>[[item.description]]</h4>
+                        </div>
+                        <p>
+                            <em>Submitted by: [[item.author]]</em>
+                        </p>
+                        <p>
+                            <a on-click="seleccionado" data-item$="[[item._id.$oid]]"
+                             data-name$="[[item.name]]" data-price$="[[item.price]]"
+                             data-description$="[[item.description]]"
+                             data-image$="[[item.image]]"
+                             data-comments$="[[item.comments]]"
+                             data-author$="[[item.author]]" class="btn btn-primary"
+                             href="/show-camping">More Info</a>
+                        </p>
+                    </div>
+                  </div>
+            </template>
+         </div>
+    </div>
+
+  </template>
+
+  <script>
+    /**
+     * `all-campings`
+     * Page with all campings picked up from mongoDB (mLab)
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class AllCampings extends Polymer.Element {
+      static get is() { return 'all-campings'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'home-page'
+          }
+        };
+      }
+      getPosts(){
+        console.log("funcion getPosts");
+        this.$.allCampingsAjax.generateRequest();
+        this.camping = null
+      }
+      handlePosts(e,request){
+        console.log(request.response);
+        this.set('posts',request.response);
+        this.message = null;
+      }
+    }
+
+    window.customElements.define(AllCampings.is, AllCampings);
+  </script>
+</dom-module>
