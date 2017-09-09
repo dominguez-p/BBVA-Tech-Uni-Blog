@@ -1,0 +1,144 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<!-- needed to return elements from this pages -->
+<link rel="import" href="my-app.html">
+
+<dom-module id="home-page">
+  <template>
+    <!-- Bootstrap css added here in order to works in all browsers -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- custom styles -->
+    <style>
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+      /*animation effects*/
+      body {
+        background-color: #000;
+      }
+
+      #landing-header {
+        z-index: 1;
+        position: relative;
+        text-align: center;
+        padding-top: 40vh;
+      }
+
+      #landing-header h1 {
+        color: #fff;
+      }
+      .slideshow {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .slideshow li {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-size: cover;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        opacity: 0;
+        z-index: 0;
+        animation: imageAnimation 50s linear infinite;
+      }
+
+      .slideshow li:nth-child(1) {
+        background-image: url(http://i.imgur.com/K3mPv14.jpg)
+      }
+      .slideshow li:nth-child(2) {
+        background-image: url(http://i.imgur.com/SBEmFpv.jpg);
+        animation-delay: 10s;
+      }
+      .slideshow li:nth-child(3) {
+        background-image: url(http://i.imgur.com/emvhOnb.jpg);
+        animation-delay: 20s;
+      }
+      .slideshow li:nth-child(4) {
+        background-image: url(http://i.imgur.com/2LSMCmJ.jpg);
+        animation-delay: 30s;
+      }
+      .slideshow li:nth-child(5) {
+        background-image: url(http://i.imgur.com/TVGe0Ef.jpg);
+        animation-delay: 40s;
+      }
+
+      @keyframes imageAnimation {
+        0% {
+          opacity: 0;
+          animation-timing-function: ease-in;
+        }
+        10% {
+          opacity: 1;
+          animation-timing-function: ease-out;
+        }
+        20% {
+          opacity: 1
+        }
+        30% {
+          opacity: 0
+        }
+      }
+
+      /* Older browser support - .no-cssanimations class added by modernizr */
+      .no-cssanimations .slideshow li {
+        opacity: 1;
+      }
+    </style>
+
+    <!-- ******************* Page Content ************************* -->
+    <!-- <p>Connected!!</p> -->
+    <div id="landing-header">
+      <h1>Welcome to YelpCamp!</h1>
+      <a href="/all-campings" class="btn btn-lg btn-success">View All Campgrounds</a>
+    </div>
+
+    <ul class="slideshow">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+
+
+    <!-- ********************************************************** -->
+  </template>
+
+  <script>
+    /**
+     * `home-page`
+     * The landing page of YelpCamp Blog
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class HomePage extends Polymer.Element {
+      static get is() { return 'home-page'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'home-page'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(HomePage.is, HomePage);
+  </script>
+</dom-module>
