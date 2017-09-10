@@ -3,7 +3,10 @@
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
 
 <!-- needed to return elements from this pages -->
+<link rel="import" href="app-data.html">
 <link rel="import" href="shared-styles.html">
+<link rel="import" href="register-login.html">
+<link rel="import" href="new-camping.html">
 
 
 <dom-module id="all-campings">
@@ -43,6 +46,11 @@
       on-response="handlePosts">
     </iron-ajax>
 
+    <!-- Access to user logged in -->
+    <app-data key="userData" data="{{storedUser}}"></app-data>
+    <!-- Access to know if the form is called from "Create" or from "Edit" -->
+    <app-data key="editBlog" data="{{editBlog}}"></app-data>
+    
     <!-- Main content -->
     <div class="container">
         <header class="card">
@@ -98,13 +106,13 @@
       static get is() { return 'all-campings'; }
       static get properties() {
         return {
-          prop1: {
-            type: String,
-            value: 'home-page'
-          },
-          // custom variables for the application
-          posts: Array
-        };
+            posts: Array,
+            camping: Object,
+            message: Object,
+            editBlog: Boolean,
+            storedUser: Object,
+            canView: Object
+          }
       }
       getPosts(){
         console.log("funcion getPosts");
@@ -115,6 +123,25 @@
         console.log(request.response);
         this.set('posts',request.response);
         this.message = null;
+      }
+      resetCamping() {
+        // set camping to null
+        this.camping = {
+            name: "",
+            price: "",
+            image: "",
+            description: ""
+        };
+        console.log(this.storedUser);
+        // if user is not logged in, set vble loggedin = false (could be undefined)
+        if(this.storedUser == ""){
+            this.storedUser = {
+            loggedin: false
+            };
+            console.log("user: " + this.storedUser.loggedin);
+        }
+        this.editBlog = false;
+        console.log("this.editBlog = " + this.editBlog)
       }
     }
 

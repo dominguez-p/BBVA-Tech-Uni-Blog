@@ -26,7 +26,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="lazy-import" href="view-404.html">
 <link rel="lazy-import" href="all-campings.html">
 <link rel="lazy-import" href="register-login.html">
-<link rel="lazy-import" href="log-out.html">
+<link rel="lazy-import" href="new-camping.html">
+<link rel="lazy-import" href="app-data.html">
 
 
 <dom-module id="my-app">
@@ -71,6 +72,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
+    <!-- Access to user logged in -->
+    <app-data key="userData" data="{{storedUser}}"></app-data>
+
     <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
     <app-route
         route="{{route}}"
@@ -98,7 +102,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
             <div main-title>Welcamp!</div>
-            <a name="register-login" href="/register-login" hidden$="[[storedUser.loggedin]]">Log In</a>
+            <div hidden$="[[storedUser.loggedin]]">
+              <a name="register-login" href="/register-login">Log in</a>
+            </div>
             <div hidden$="[[!storedUser.loggedin]]">
                 <span class="greeting">Hi [[storedUser.name]]!</span>
                 <log-out stored-user="{{storedUser}}" link></log-out>
@@ -114,14 +120,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <home-page name="home-page"></home-page>
           <all-campings name="all-campings"></all-campings>
           <register-login name="register-login"></register-login>
+          <new-camping name="new-camping"></new-camping>
           <!-- <my-view3 name="view3"></my-view3> -->
           <view-404 name="view-404"></view-404>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
 
-    <!-- Access to user logged in -->
-    <app-data key="userData" data="{{storedUser}}"></app-data>
 
   </template>
 

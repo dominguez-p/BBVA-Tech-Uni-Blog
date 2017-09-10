@@ -1,0 +1,163 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html">
+
+<!-- needed to return elements from this pages -->
+<link rel="import" href="app-data.html">
+<link rel="import" href="all-campings.html">
+<link rel="import" href="shared-styles.html">
+
+
+
+<dom-module id="new-camping">
+  <template>
+    <!-- Bootstrap css added here in order to works in all browsers -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+    <iron-ajax
+      id="createCampingAjx"
+      params='{"apiKey":"qpnQ2vCoFR8HMb_cf0vFfyP0B99yUKGL"}'
+      content-type="application/json"
+      handle-as="text"
+      on-response="handleUserResponse"
+      on-error="handleUserError">
+    </iron-ajax>
+    <!-- Access to user logged in -->
+    <app-data key="userData" data="{{storedUser}}"></app-data>
+    <!-- Access to know if the form is called from "Create" or from "Edit" -->
+    <app-data key="editBlog" data="{{editBlog}}"></app-data>
+
+    <!-- Main content -->
+    <a href="/all-campings">Go Back</a>
+    <div class="card">
+      <div hidden$="[[storedUser.loggedin]]">
+          <p>You must be <a href="register-login">log in</a></p>
+      </div>
+      <div hidden$="[[!storedUser.loggedin]]">
+          <h1 hidden$="[[editBlog]]" style="text-align: center">Create a new campground</h1>
+          <h1 hidden$="[[!editBlog]]" style="text-align: center">Edit campground</h1>
+          <div style="width: 30%; margin: 25px auto">
+              <div class="form-group">
+                  <iron-input bind-value="{{camping.name}}">
+                      <input class="form-camping" type="text" name="name" placeholder="name">
+                  </iron-input>
+              </div>
+              <div class="form-group">
+                  <iron-input bind-value="{{camping.price}}">
+                      <input class="form-control" type="number" name="price" placeholder="price" min="0.01" step="0.01">
+                  </iron-input>
+              </div>
+              <div class="form-group">
+                  <iron-input  bind-value="{{camping.image}}">
+                      <input class="form-control" type="text" name="image" placeholder="image url">
+                  </iron-input>
+              </div>
+              <div class="form-group">
+                  <iron-autogrow-textarea id="textareaForm" bind-value="{{camping.description}}" rows="4" placeholder="Description"></iron-autogrow-textarea>
+              </div>
+              <div class="form-group">
+                  <div hidden$="[[editBlog]]" >
+                      <a href="/all-campings" on-click="createCampimg" class="btn btn-lg btn-control btn-primary">Create!</a>
+                  </div>
+                  <div hidden$="[[!editBlog]]">
+                      <a href="/all-campings" on-click="editCamping" class="btn btn-lg btn-control btn-primary">Edit!</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `new-camping`
+     * Form to create and edit campings
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class NewCamping extends Polymer.Element {
+      static get is() { return 'new-camping'; }
+      static get properties() {
+        return {
+            camping: {
+                type: Object,
+                value: {}
+                },
+            message: {
+                type: Object,
+                showMsg: {
+                    type: Boolean,
+                    value: false
+                },
+                errorMsg: {
+                    type: Boolean,
+                    value: false,
+                },
+                textMsg: String
+                },
+            editBlog: Boolean
+        }
+      }
+      _setReqBody() {
+          this.$.createCampingAjx.body = this.camping;
+          console.log(this.$.createCampingAjx.body);
+      }
+      createCampimg(){
+          var camping = {
+              name: this.camping.name,
+              price: this.camping.price,
+              image: this.camping.image,
+              description: this.camping.description,
+              author: this.storedUser.name
+          };
+          this.camping = camping;
+          console.log("funcion createCampimg " + this.camping.name);
+          this.$.createCampingAjx.method = "POST"
+          this.$.createCampingAjx.url = "https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds"
+          this._setReqBody();
+          console.log("POST: " + this.$.createCampingAjx.body);
+          this.$.createCampingAjx.generateRequest();
+      }
+      editCamping() {
+          var camping = {
+              name: this.camping.name,
+              price: this.camping.price,
+              image: this.camping.image,
+              description: this.camping.description,
+              author: this.storedUser.name
+          };
+          this._setReqBody();
+          this.$.createCampingAjx.method = "PUT"
+          this.$.createCampingAjx.url = "https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds/" + this.camping.id;
+          console.log("PUT: " + this.$.createCampingAjx.body);
+          this.$.createCampingAjx.generateRequest();
+      }
+
+      handleUserResponse(event) {
+          console.log("Camping creado!")
+          var message = {
+              showMsg: true,
+              errorMsg: false,
+              textMsg: "Camping creado!"
+          }
+          this.message = message;
+          this.camping = null;
+          // var response = JSON.parse(event.detail.response);
+          // console.log("crear camping= " + response);
+      }
+      handleUserError(event) {
+          this.error = event.detail.request.xhr.response;
+          console.log(this.error);
+      }
+    }
+
+    window.customElements.define(NewCamping.is, NewCamping);
+  </script>
+</dom-module>

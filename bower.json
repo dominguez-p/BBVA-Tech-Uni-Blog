@@ -17,7 +17,8 @@
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
     "iron-ajax": "^2.0.5",
     "paper-button": "^2.0.0",
-    "iron-input": "^2.0.1"
+    "iron-input": "^2.0.1",
+    "iron-autogrow-textarea": "^2.1.0"
   },
   "resolutions": {
     "polymer": "^2.0.0"

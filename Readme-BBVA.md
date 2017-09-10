@@ -27,4 +27,6 @@ CRONOLOGÍA DE LA PRÁCTICA:
   11.1.- Instalar componente paper-button, iron-input
             bower install paper-button iron-input --save
 12.- Crear el elemento log-out
-        
+13.- Crear el elemento new-camping (para crear y editar blogs)
+  13.1.- Instalar el componente iron-autogrow-textarea
+            bower install iron-autogrow-textarea --save

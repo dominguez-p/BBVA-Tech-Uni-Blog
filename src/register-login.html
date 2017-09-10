@@ -30,6 +30,13 @@
       on-error="handleUserError">
     </iron-ajax>
 
+    <!-- Error section, to display errors on the screen -->
+    <template is="dom-if" if="[[error]]">
+      <div class="alert-error">
+        <p><strong>Error:</strong> [[error]]</p>
+      </div>
+    </template>
+
     <!-- Main content -->
     <div class="card">
       <!-- If it's NOT a registered user (form with user/password) -->
