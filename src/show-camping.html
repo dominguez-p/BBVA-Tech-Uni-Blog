@@ -1,0 +1,97 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="app-data.html">
+<link rel="import" href="shared-styles.html">
+
+
+<dom-module id="show-camping">
+  <template>
+    <!-- Bootstrap css added here in order to works in all browsers -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+    <app-data key="camping" data="{{camping}}"></app-data>
+    <app-data key="userData" data="{{storedUser}}"></app-data>
+    <app-data key="grants" data="{{canView}}"></app-data>
+    <a href="/all-campings">Volver</a>
+    <h1>[[camping.name]]</h1>
+    <div class="container">
+      <div class="row">
+          <div class="col-md-3">
+              <p class="lead">YelpCamp</p>
+              <div class="list-group">
+                  <li class="list-group-item active">Info 1</li>
+                  <li class="list-group-item">Info 2</li>
+                  <li class="list-group-item">Info 3</li>
+              </div>
+          </div>
+          <div class="col-md-9">
+              <div class="thumbnail">
+                  <img class="image-responsive" src="[[camping.image]]">
+                  <div class="caption-full">
+                      <h4 class="pull-right">€[[camping.price]]/night</h4>
+                      <h4><a>[[camping.name]]</a></h4>
+                      <p>[[camping.description]]</p>
+
+
+                      <!-- //si tiene permiso -->
+                      <!-- <a class="btn btn-xs btn-warning" href="#">Edit</a> -->
+                      <!-- <form class="delete-form" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST"> -->
+                      <!-- <button class="btn btn-xs btn-danger">Delete</button> -->
+                      <div class="edit-delete-form">
+                          <div hidden$="[[!canView]]">
+                              <!-- <p>puede ver</p> -->
+                              <edit-camping hidden$="[[!storedUser.loggedin]]"></edit-camping>
+                              <delete-camping hidden$="[[!storedUser.loggedin]]" ></delete-camping>
+                          </div>
+                          <p hidden$="[[canView]]"><em> info: no puede editar ni eliminar este post si no es el propietario</em></p>
+                      </div>
+                      <div class="text-right">
+                          <a class="btn btn-success" href="/new-comment">Add new comment</a>
+                      </div>
+                      <!-- </form> -->
+                      <!-- //si tiene permiso -->
+                      <p>
+                          <em>Submitted by: [[camping.author]]</em>
+                      </p>
+
+                  </div>
+                  <div>
+                      <all-comments></all-comments>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `show-camping`
+     * Detail of camping, description, price, etc
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class ShowCamping extends Polymer.Element {
+      static get is() { return 'show-camping'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'show-camping'
+          },
+          camping: Object
+        };
+      }
+    }
+
+    window.customElements.define(ShowCamping.is, ShowCamping);
+  </script>
+</dom-module>

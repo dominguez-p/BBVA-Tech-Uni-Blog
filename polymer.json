@@ -6,6 +6,7 @@
     "src/all-campings.html",
     "src/register-login.html",
     "src/new-camping.html",
+    "src/show-camping.html",
     "src/my-view404.html"
   ],
   "sources": [

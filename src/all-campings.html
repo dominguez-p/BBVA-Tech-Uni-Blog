@@ -7,6 +7,7 @@
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="register-login.html">
 <link rel="import" href="new-camping.html">
+<link rel="import" href="show-camping.html">
 
 
 <dom-module id="all-campings">
@@ -50,7 +51,9 @@
     <app-data key="userData" data="{{storedUser}}"></app-data>
     <!-- Access to know if the form is called from "Create" or from "Edit" -->
     <app-data key="editBlog" data="{{editBlog}}"></app-data>
-    
+    <!-- Acces to the camping selected -->
+    <app-data key="camping" data="{{camping}}"></app-data>
+
     <!-- Main content -->
     <div class="container">
         <header class="card">
@@ -142,6 +145,56 @@
         }
         this.editBlog = false;
         console.log("this.editBlog = " + this.editBlog)
+      }
+      seleccionado(event) {
+        // en event vienen todos los argumentos pasados desde la llamada como "data-xxx"
+        // refactorizado, cuando se crea un camping se asignan comentarios vacíos "[]"
+                //
+                // console.log("comments: " + event.target.dataset.comments);
+                // if(event.target.dataset.comments == undefined) {
+                //     comment = "[]"
+                //     console.log("comentarios vacíos");
+                // }
+                // console.log("author: " + event.target.dataset.author);
+
+        //guardar en app-data los datos para mostrar en show-camping
+        this.camping = {
+            id: event.target.dataset.item,
+            name: event.target.dataset.name,
+            price: event.target.dataset.price,
+            image: event.target.dataset.image,
+            description: event.target.dataset.description,
+            author: event.target.dataset.author,
+            comments: JSON.parse(event.target.dataset.comments)
+            }
+        //controlo que el usuario logado pueda editar sólo sus comentarios
+        console.log("camping: " + this.camping);
+        if ((this.storedUser.name !== undefined)
+                && (event.target.dataset.author === this.storedUser.name)) {
+            // console.log("puede ver!!")
+            this.canView = true;
+        } else {
+            this.canView = false;
+            // console.log("NO puede ver!!")
+        }
+        //recorro los comentarios y marco los que puede ver el usuario
+        var obj = this.camping.comments
+        var author = this.storedUser.name;
+        //si el usuario está logado
+        if (this.storedUser.name !== undefined) {
+            //por cada comentario
+            Object.keys(obj).forEach(function(key){
+                //si coincide el autor del comentario con el usuario logado
+                if (obj[key].author == author) {
+                    // console.log("puede editar/borrar el comentario")
+                    obj[key].canView = true;
+                } else {
+                    obj[key].canView = false;
+                    // console.log("NO puede editar/borrar el comentario");
+                }
+                console.log(key, obj[key]);
+            });
+        }
       }
     }
 
