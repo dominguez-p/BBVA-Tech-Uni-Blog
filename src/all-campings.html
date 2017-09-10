@@ -5,6 +5,7 @@
 <!-- needed to return elements from this pages -->
 <link rel="import" href="shared-styles.html">
 
+
 <dom-module id="all-campings">
   <template>
     <!-- Bootstrap css added here in order to works in all browsers -->
@@ -100,7 +101,9 @@
           prop1: {
             type: String,
             value: 'home-page'
-          }
+          },
+          // custom variables for the application
+          posts: Array
         };
       }
       getPosts(){

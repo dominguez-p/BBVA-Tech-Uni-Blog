@@ -23,9 +23,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="my-icons.html">
 
 <link rel="lazy-import" href="home-page.html">
+<link rel="lazy-import" href="view-404.html">
 <link rel="lazy-import" href="all-campings.html">
-<!-- <link rel="lazy-import" href="my-view3.html"> -->
-<link rel="lazy-import" href="my-view404.html">
+<link rel="lazy-import" href="register-login.html">
+<link rel="lazy-import" href="log-out.html">
+
 
 <dom-module id="my-app">
   <template>
@@ -83,6 +85,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="home-page" href="[[rootPath]]home-page" style="text-align: left">Landing Page</a>
           <a name="all-campings" href="[[rootPath]]all-campings">Campings</a>
+          <a name="register-login" href="[[rootPath]]register-login">Sign Up/Log In</a>
           <!-- <a name="view2" href="[[rootPath]]view2">View Two</a>
           <a name="view3" href="[[rootPath]]view3">View Three</a> -->
         </iron-selector>
@@ -95,21 +98,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
             <div main-title>Welcamp!</div>
+            <a name="register-login" href="/register-login" hidden$="[[storedUser.loggedin]]">Log In</a>
+            <div hidden$="[[!storedUser.loggedin]]">
+                <span class="greeting">Hi [[storedUser.name]]!</span>
+                <log-out stored-user="{{storedUser}}" link></log-out>
+            </div>
           </app-toolbar>
         </app-header>
 
         <iron-pages
             selected="[[page]]"
             attr-for-selected="name"
-            fallback-selection="view404"
+            fallback-selection="view-404"
             role="main">
           <home-page name="home-page"></home-page>
           <all-campings name="all-campings"></all-campings>
+          <register-login name="register-login"></register-login>
           <!-- <my-view3 name="view3"></my-view3> -->
-          <my-view404 name="view404"></my-view404>
+          <view-404 name="view-404"></view-404>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
+
+    <!-- Access to user logged in -->
+    <app-data key="userData" data="{{storedUser}}"></app-data>
+
   </template>
 
   <script>
@@ -128,6 +141,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // This shouldn't be neccessary, but the Analyzer isn't picking up
           // Polymer.Element#rootPath
           rootPath: String,
+          // Custom variables for the application
+          storedUser: Object
         };
       }
 
@@ -160,7 +175,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       _showPage404() {
-        this.page = 'view404';
+        this.page = 'view-404';
       }
     }
 

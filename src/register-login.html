@@ -1,0 +1,174 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-input/iron-input.html">
+
+<link rel="import" href="app-data.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="log-out.html">
+
+
+<dom-module id="register-login">
+  <template>
+    <!-- Bootstrap css added here in order to works in all browsers -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Custom styles -->
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+
+    <!-- Ajax section to connect with postgreSQL -->
+    <iron-ajax
+      id="registerLoginAjax"
+      method="POST"
+      content-type="application/json"
+      handle-as="text"
+      on-response="handleUserResponse"
+      on-error="handleUserError">
+    </iron-ajax>
+
+    <!-- Main content -->
+    <div class="card">
+      <!-- If it's NOT a registered user (form with user/password) -->
+      <div id="unauthenticated" hidden$="[[storedUser.loggedin]]">
+        <div class="row">
+          <div style="width: 30%; margin: 25px auto">
+            <h1  hidden$="[[signup]]" style="text-align: center">Log In</h1>
+            <h1  hidden$="[[!signup]]" style="text-align: center">Sign Up</h1>
+            <p><strong><a href="/register-login" on-click="showLogIn">Log in</a></strong> or <strong><a href="/register-login" on-click="showSignUp">sign up</a></strong> to manage campings!</p>
+            <div class="form-group">
+              <!-- <label for="username">Username</label> -->
+              <iron-input bind-value="{{formData.nombre}}">
+                <input style="width: 100%" id="username" type="text" placeholder="username" required="true" autofocus=""></iron-input>
+              </iron-input>
+            </div>
+            <div class="form-group">
+              <!-- <label for="password">Password</label> -->
+              <iron-input>
+                <input id="password" type="password" value="{{formData.password::input}}" placeholder="password" required=true></iron-input>
+              </iron-input>
+            </div>
+            <div class="form-group" hidden$="[[!signup]]">
+                <!-- <label for="email">e-mail</label> -->
+              <iron-input>
+                <input id="email" type="email" value="{{formData.email::input}}" placeholder="email" required=""></iron-input>
+              </iron-input>
+            </div>
+            <div class="form-group" hidden$="[[signup]]">
+                <paper-button class="btn btn-lg btn-control btn-primary" raised class="primary" on-tap="postLogin">Log In</paper-button>
+            </div>
+            <div class="form-group" hidden$="[[!signup]]">
+                <paper-button class="btn btn-lg btn-control btn-primary" on-tap="postRegister">Sign Up</paper-button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- else if it's a registered user (custom welcome) -->
+      <div id="authenticated" hidden$="[[!storedUser.loggedin]]" style="text-align: center">
+      <div>
+        <h2>Hello, [[storedUser.name]]!</h2>
+      </div>
+      <div>
+          <p>You are currently logged in. You can add/modify/delete campings and comments in <a href="/all-campings">all campings</a>!</p>
+      </div>
+      <div>
+        <log-out stored-user="{{storedUser}}"></log-out>
+      </div>
+    </div>
+    </div>
+    <!-- Store the user logged for the rest of the application -->
+    <app-data key="userData" data="{{storedUser}}"></app-data>
+
+  </template>
+
+  <script>
+    /**
+     * `register-login`
+     * Page for sign up and log in
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class RegisterLogin extends Polymer.Element {
+      static get is() { return 'register-login'; }
+      static get properties() {
+        return {
+          formData: {
+            type: Object,
+            value: {}
+          },
+          storedUser: Object,
+          error: String,
+          handleResponse: {
+            type: Object,
+            notify: true,
+            readOnly: true
+          },
+          signup: {
+            type: Boolean,
+            value: false
+          }
+        }
+      }
+      _setReqBody() {
+        this.$.registerLoginAjax.body = this.formData;
+      }
+      postLogin() {
+        this.$.registerLoginAjax.url = 'http://postgrebc9688.cloudapp.net:3000/api/login';
+        this._setReqBody();
+        this.$.registerLoginAjax.generateRequest();
+      }
+      postRegister() {
+        this.$.registerLoginAjax.url = 'http://postgrebc9688.cloudapp.net:3000/api/usuarios';
+        this._setReqBody();
+        this.$.registerLoginAjax.generateRequest();
+      }
+      showSignUp(){
+        this.signup = true;
+      }
+      showLogIn(){
+        this.signup = false;
+      }
+      handleUserResponse(event) {
+        var success = false;
+        var response = JSON.parse(event.detail.response);
+        if (!this.signup) { //si es login
+          if (response.data.count > 0) {
+            success = true;
+            // redirect to Secret Quotes
+            //this.set('route.path', '/other-quotes')
+          } else {
+              this.error="Login incorrecto!"
+              // reset form data
+              this.formData = {"nombre":"","password":""};
+              success = false;
+          }
+        } else { //es sign up
+          success = true;
+        }
+        if (success){
+          this.error = '';
+          this.storedUser = {
+                name: this.formData.nombre,
+                id_token: response.id_token,
+                access_token: response.access_token,
+                loggedin: true
+          }
+          this.signup = false;
+          success = false;
+        }
+      }
+      handleUserError(event) {
+        this.error = event.detail.request.xhr.response;
+        console.log(this.error);
+      }
+    }
+
+    window.customElements.define(RegisterLogin.is, RegisterLogin);
+  </script>
+</dom-module>

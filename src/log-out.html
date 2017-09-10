@@ -1,0 +1,62 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="app-data.html">
+
+<dom-module id="log-out">
+    <template>
+      <!-- Bootstrap css added here in order to works in all browsers -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+      <!-- Custom styles -->
+      <style include="shared-styles">
+          :host {
+              margin: 0;
+              padding: 0;
+          }
+
+          a {
+              color: #fff;
+              display: inline-block;
+              font-size: 20px;
+          }
+      </style>
+
+      <!-- Access to user logged in -->
+      <app-data key="userData" data="{{storedUser}}"></app-data>
+
+      <!-- Main content -->  
+      <template is="dom-if" if="{{!link}}">
+          <div>
+              <paper-button class="btn btn-lg btn-control btn-primary paper-button" raised on-tap="logout">Log Out</paper-button>
+          </div>
+      </template>
+
+      <template is="dom-if" if="{{link}}">
+          <a on-tap="logout" href>Log Out</a>
+      </template>
+    </template>
+
+    <script>
+        (function() {
+            Polymer({
+                is: 'log-out',
+                properties: {
+                    storedUser: Object,
+                    link: {
+                        type: Boolean,
+                        value: false
+                    }
+                },
+                logout: function() {
+                    // remove user data
+                    this.storedUser ={
+                        name: null,
+                        id_token: null,
+                        access_token: null,
+                        loggedin: false
+                };
+                }
+            });
+        }());
+    </script>
+</dom-module>

@@ -23,3 +23,8 @@ CRONOLOGÍA DE LA PRÁCTICA:
   9.1.- Instalar componente iron-ajax
             bower install iron-ajax --save
 10.- Subimos los cambios al repositorio Git.
+11.- Crear elemento register-login
+  11.1.- Instalar componente paper-button, iron-input
+            bower install paper-button iron-input --save
+12.- Crear el elemento log-out
+        
