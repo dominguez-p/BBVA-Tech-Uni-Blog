@@ -1,0 +1,79 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="app-data.html">
+
+<dom-module id="delete-camping">
+  <template>
+    <!-- Bootstrap css added here in order to works in all browsers -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <style include="shared-styles">
+    .delete-form {
+      display: inline;
+    }
+    </style>
+    <iron-ajax
+      id="deleteCampingAjx"
+      url='https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds'
+      params='{"apiKey":"qpnQ2vCoFR8HMb_cf0vFfyP0B99yUKGL"}'
+      method="DELETE"
+      content-type="application/json"
+      handle-as="text"
+      on-response="handleUserResponse"
+      on-error="handleUserError">
+    </iron-ajax>
+    <app-data key="camping" data="{{camping}}"></app-data>
+    <app-data key="message" data="{{message}}"></app-data>
+    <a class="btn btn-xs btn-danger delete-form" raised on-tap="delete" href="all-campings#topPageElement">Delete</a>
+
+  </template>
+
+  <script>
+    /**
+     * `delete-camping`
+     * element to delete a camping
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+     (function() {
+             Polymer({
+                 is: 'delete-camping',
+                 properties: {
+                     camping: Object,
+                 },
+                 delete: function() {
+                     // remove user data
+                     // this.storedUser = null;
+                     var id = this.camping.id;
+                     console.log("id a borrar: " + id);
+                     this.$.deleteCampingAjx.url = "https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds/" + id;
+                     this.$.deleteCampingAjx.generateRequest();
+                     console.log("camping borrado!!");
+                     var message = {
+                         showMsg: true,
+                         errorMsg: false,
+                         textMsg: "Camping eliminado!"
+                     }
+                     this.message = message;
+                 },
+                 handleUserError: function() {
+                     var message = {
+                         showMsg: true,
+                         errorMsg: true,
+                         textMsg: "Oooops, something wrong!"
+                     }
+                     // this.set('route.path', '/all-campings');
+
+                 },
+                 handleUserResponse: function() {
+
+                 }
+
+             });
+         }());
+  </script>
+</dom-module>

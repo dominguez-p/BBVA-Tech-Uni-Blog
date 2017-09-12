@@ -6,6 +6,7 @@
 <link rel="import" href="app-data.html">
 <link rel="import" href="all-campings.html">
 <link rel="import" href="shared-styles.html">
+<link rel="import" href="edit-camping.html">
 
 
 
@@ -31,6 +32,10 @@
     <app-data key="userData" data="{{storedUser}}"></app-data>
     <!-- Access to know if the form is called from "Create" or from "Edit" -->
     <app-data key="editBlog" data="{{editBlog}}"></app-data>
+    <!-- Acces to the camping selected -->
+    <app-data key="camping" data="{{camping}}"></app-data>
+    <!-- Acces to the error message -->
+    <app-data key="message" data="{{message}}"></app-data>
 
     <!-- Main content -->
     <a href="/all-campings">Go Back</a>
@@ -59,6 +64,11 @@
               </div>
               <div class="form-group">
                   <iron-autogrow-textarea id="textareaForm" bind-value="{{camping.description}}" rows="4" placeholder="Description"></iron-autogrow-textarea>
+              </div>
+              <div class="form-group">
+                  <iron-input bind-value="{{camping.url}}">
+                      <input class="form-control" type="text" name="url" placeholder="url">
+                  </iron-input>
               </div>
               <div class="form-group">
                   <div hidden$="[[editBlog]]" >
@@ -116,6 +126,7 @@
               image: this.camping.image,
               description: this.camping.description,
               author: this.storedUser.name,
+              url: this.camping.url,
               comments: "[]"
           };
           this.camping = camping;
@@ -132,7 +143,8 @@
               price: this.camping.price,
               image: this.camping.image,
               description: this.camping.description,
-              author: this.storedUser.name
+              author: this.storedUser.name,
+              url: this.camping.url
           };
           this._setReqBody();
           this.$.createCampingAjx.method = "PUT"
@@ -142,11 +154,20 @@
       }
 
       handleUserResponse(event) {
-          console.log("Camping creado!")
-          var message = {
-              showMsg: true,
-              errorMsg: false,
-              textMsg: "Camping creado!"
+          console.log("Camping creado/editado!")
+          var textMsg = ""
+          if (this.editBlog) {
+            var message = {
+                showMsg: true,
+                errorMsg: false,
+                textMsg: "Camping editado!"
+            }
+          } else {
+            var message = {
+                showMsg: true,
+                errorMsg: false,
+                textMsg: "Camping creado!"
+            }
           }
           this.message = message;
           this.camping = null;

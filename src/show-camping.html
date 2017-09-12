@@ -3,6 +3,9 @@
 
 <link rel="import" href="app-data.html">
 <link rel="import" href="shared-styles.html">
+<link rel="import" href="edit-camping.html">
+<link rel="import" href="delete-camping.html">
+
 
 
 <dom-module id="show-camping">
@@ -14,10 +17,16 @@
       :host {
         display: block;
       }
+      .edit-delete-form {
+          display: inline;
+      }
     </style>
     <app-data key="camping" data="{{camping}}"></app-data>
+
     <app-data key="userData" data="{{storedUser}}"></app-data>
+
     <app-data key="grants" data="{{canView}}"></app-data>
+
     <a href="/all-campings">Volver</a>
     <h1>[[camping.name]]</h1>
     <div class="container">
@@ -35,7 +44,7 @@
                   <img class="image-responsive" src="[[camping.image]]">
                   <div class="caption-full">
                       <h4 class="pull-right">€[[camping.price]]/night</h4>
-                      <h4><a>[[camping.name]]</a></h4>
+                      <h4><a href="[[camping.url]]" target="_blank">[[camping.name]]</a></h4>                      
                       <p>[[camping.description]]</p>
 
 
@@ -45,11 +54,10 @@
                       <!-- <button class="btn btn-xs btn-danger">Delete</button> -->
                       <div class="edit-delete-form">
                           <div hidden$="[[!canView]]">
-                              <!-- <p>puede ver</p> -->
-                              <edit-camping hidden$="[[!storedUser.loggedin]]"></edit-camping>
-                              <delete-camping hidden$="[[!storedUser.loggedin]]" ></delete-camping>
+                            <edit-camping hidden$="[[!storedUser.loggedin]]"></edit-camping>
+                            <delete-camping hidden$="[[!storedUser.loggedin]]"></delete-camping>
                           </div>
-                          <p hidden$="[[canView]]"><em> info: no puede editar ni eliminar este post si no es el propietario</em></p>
+                          <p hidden$="[[canView]]"><em> info: you must be the author of the post to edit or delete this post</em></p>
                       </div>
                       <div class="text-right">
                           <a class="btn btn-success" href="/new-comment">Add new comment</a>
@@ -68,6 +76,7 @@
           </div>
       </div>
     </div>
+    <a href="/all-campings">Volver</a>
   </template>
 
   <script>

@@ -10,6 +10,7 @@
 <link rel="import" href="show-camping.html">
 
 
+
 <dom-module id="all-campings">
   <template>
     <!-- Bootstrap css added here in order to works in all browsers -->
@@ -53,8 +54,20 @@
     <app-data key="editBlog" data="{{editBlog}}"></app-data>
     <!-- Acces to the camping selected -->
     <app-data key="camping" data="{{camping}}"></app-data>
+    <!-- Access to the information if this camping can be edited -->
+    <app-data key="grants" data="{{canView}}"></app-data>
+    <!-- Acces to the error message -->
+    <app-data key="message" data="{{message}}"></app-data>
+
+
+    <!-- Error section -->
+    <template is="dom-if" if="[[message.showMsg]]">  <!-- si es un error -->
+     <p hidden$="[[message.errorMsg]]" class="alert alert-success" role="alert"><strong>Info:</strong>[[message.textMsg]]</p>
+     <p hidden$="[[!message.errorMsg]]" class="alert alert-danger" role="alert"><strong>Info:</strong>[[message.textMsg]]</p>
+    </template>
 
     <!-- Main content -->
+    <p id="topPageElement"></p>
     <div class="container">
         <header class="card">
             <div class="container">
@@ -69,7 +82,7 @@
         <div class="row text-center" style="display:flex; flex-wrap: wrap;">
           <!-- show all the post from mongoDB, stored in "posts" array -->
             <template is="dom-repeat" items="[[posts]]">
-                <div class="col-md-3 col-sm-6">
+                <div class="col-lg-6 col-md-4 col-sm-6">
                     <div class="thumbnail">
                         <img src="[[item.image]]">
                         <h1>[[item.name]]</h1>
@@ -85,7 +98,8 @@
                              data-description$="[[item.description]]"
                              data-image$="[[item.image]]"
                              data-comments$="[[item.comments]]"
-                             data-author$="[[item.author]]" class="btn btn-primary"
+                             data-author$="[[item.author]]"
+                             data-url$=[[item.url]] class="btn btn-primary"
                              href="/show-camping">More Info</a>
                         </p>
                     </div>
@@ -151,10 +165,17 @@
         // refactorizado, cuando se crea un camping se asignan comentarios vacíos "[]"
                 //
                 // console.log("comments: " + event.target.dataset.comments);
+                // var comment = event.target.dataset.comments
                 // if(event.target.dataset.comments == undefined) {
                 //     comment = "[]"
                 //     console.log("comentarios vacíos");
                 // }
+                var comment = String;
+                if (event.target.dataset.comments == undefined) {
+                    comment = "[]"
+                } else {
+                      comment = event.target.dataset.comments
+                }
                 // console.log("author: " + event.target.dataset.author);
 
         //guardar en app-data los datos para mostrar en show-camping
@@ -165,7 +186,9 @@
             image: event.target.dataset.image,
             description: event.target.dataset.description,
             author: event.target.dataset.author,
-            comments: JSON.parse(event.target.dataset.comments)
+            url: event.target.dataset.url,
+            comments: JSON.parse(comment)
+
             }
         //controlo que el usuario logado pueda editar sólo sus comentarios
         console.log("camping: " + this.camping);

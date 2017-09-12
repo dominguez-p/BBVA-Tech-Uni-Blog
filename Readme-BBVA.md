@@ -30,4 +30,7 @@ CRONOLOGÍA DE LA PRÁCTICA:
 13.- Crear el elemento new-camping (para crear y editar post)
   13.1.- Instalar el componente iron-autogrow-textarea
             bower install iron-autogrow-textarea --save
-14.- Crear el elemento show-camping (para ver el detalle de cada post)          
+14.- Crear el elemento show-camping (para ver el detalle de cada post)
+15.- Crear la funcionalidad de editar camping (utilizando el elemento new-camping):
+  15.1.- Creamos el elemento edit-camping
+  15.2.- Creamos el elemento delete-camping
