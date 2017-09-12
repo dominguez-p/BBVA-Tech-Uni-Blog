@@ -5,7 +5,7 @@
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="edit-camping.html">
 <link rel="import" href="delete-camping.html">
-
+<link rel="import" href="all-campings.html">
 
 
 <dom-module id="show-camping">
@@ -16,9 +16,26 @@
     <style include="shared-styles">
       :host {
         display: block;
+
+        padding: 10px;
       }
+      .thumbnail img {
+          width: 100%;
+      }
+
+      .thumbnail {
+          padding: 0;
+      }
+
+      .thumbnail .caption-full {
+          padding: 9px;
+      }
+
       .edit-delete-form {
           display: inline;
+      }
+      a {
+          color: white;
       }
     </style>
     <app-data key="camping" data="{{camping}}"></app-data>
@@ -44,7 +61,7 @@
                   <img class="image-responsive" src="[[camping.image]]">
                   <div class="caption-full">
                       <h4 class="pull-right">€[[camping.price]]/night</h4>
-                      <h4><a href="[[camping.url]]" target="_blank">[[camping.name]]</a></h4>                      
+                      <h4><a href="[[camping.url]]" target="_blank">[[camping.name]]</a></h4>
                       <p>[[camping.description]]</p>
 
 
@@ -52,22 +69,23 @@
                       <!-- <a class="btn btn-xs btn-warning" href="#">Edit</a> -->
                       <!-- <form class="delete-form" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST"> -->
                       <!-- <button class="btn btn-xs btn-danger">Delete</button> -->
-                      <div class="edit-delete-form">
-                          <div hidden$="[[!canView]]">
-                            <edit-camping hidden$="[[!storedUser.loggedin]]"></edit-camping>
-                            <delete-camping hidden$="[[!storedUser.loggedin]]"></delete-camping>
-                          </div>
-                          <p hidden$="[[canView]]"><em> info: you must be the author of the post to edit or delete this post</em></p>
-                      </div>
-                      <div class="text-right">
-                          <a class="btn btn-success" href="/new-comment">Add new comment</a>
-                      </div>
+                        <div class="edit-delete-form">
+                            <div hidden$="[[!canView]]">
+                                <!-- <p>puede ver</p> -->
+                                  <edit-camping hidden$="[[!storedUser.loggedin]]"></edit-camping>
+                                  <delete-camping hidden$="[[!storedUser.loggedin]]" ></delete-camping>
+                            </div>
+                            <p hidden$="[[canView]]"><em> info: you must be the author of the post to edit or delete this post</em></p>
+                        </div>
+
                       <!-- </form> -->
                       <!-- //si tiene permiso -->
                       <p>
                           <em>Submitted by: [[camping.author]]</em>
                       </p>
-
+                      <div class="text-right">
+                          <a class="btn btn-success" href="/new-comment">Add new comment</a>
+                      </div>
                   </div>
                   <div>
                       <all-comments></all-comments>

@@ -11,6 +11,7 @@
 
 
 
+
 <dom-module id="all-campings">
   <template>
     <!-- Bootstrap css added here in order to works in all browsers -->
@@ -58,6 +59,8 @@
     <app-data key="grants" data="{{canView}}"></app-data>
     <!-- Acces to the error message -->
     <app-data key="message" data="{{message}}"></app-data>
+    <!-- Access to the post searched -->
+    <app-data key="posts" data="{{posts}}"></app-data>
 
 
     <!-- Error section -->
@@ -134,12 +137,15 @@
       getPosts(){
         console.log("funcion getPosts");
         this.$.allCampingsAjax.generateRequest();
-        this.camping = null
+        this.camping = null;
+
       }
       handlePosts(e,request){
         console.log(request.response);
-        this.set('posts',request.response);
+        // this.set('posts',request.response);
+        this.posts = request.response;
         this.message = null;
+        this.editBlog = true;
       }
       resetCamping() {
         // set camping to null

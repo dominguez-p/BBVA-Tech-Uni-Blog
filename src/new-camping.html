@@ -76,7 +76,7 @@
                   </div>
                   <div hidden$="[[!editBlog]]">
                       <a href="/all-campings" on-click="editCamping" class="btn btn-lg btn-control btn-primary">Edit!</a>
-                  </div>
+                  </div>                  
               </div>
           </div>
       </div>
@@ -152,7 +152,6 @@
           console.log("PUT: " + this.$.createCampingAjx.body);
           this.$.createCampingAjx.generateRequest();
       }
-
       handleUserResponse(event) {
           console.log("Camping creado/editado!")
           var textMsg = ""

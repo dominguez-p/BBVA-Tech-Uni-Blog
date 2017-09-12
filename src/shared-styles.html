@@ -53,14 +53,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding-left: 10px;
       }
 
+      :root {
+        --primary-color: #4285f4;
+      }
+      a,
+      paper-button {
+          font-weight: bold;
+          /*color: white;*/
+      }
+      /*a {
+          color: var(--primary-color);
+      }*/
+      paper-button {
+          color: #fff;
+      }
+      paper-button.primary {
+          background: var(--primary-color);
+      }
+      blockquote {
+          border-left: 4px solid #eee;
+          margin-left: 4px;
+          padding-left: 20px;
+      }
+
       .thumbnail img {
-        width: 100%;
+                width: 100%;
       }
+
       .thumbnail {
-        padding: 0;
+          padding: 0;
       }
+
       .thumbnail .caption-full {
-        padding: 9px;
+          padding: 9px;
       }
 
     </style>

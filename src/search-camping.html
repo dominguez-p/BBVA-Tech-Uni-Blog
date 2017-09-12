@@ -1,0 +1,103 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="app-data.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="search-camping">
+  <template>
+    <!-- Bootstrap css added here in order to works in all browsers -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <style>
+      :host {
+        display: block;
+      }
+      .searchForm {
+        display: inline;
+        color: black;
+        padding-right: 200px;
+      }
+
+    </style>
+    <iron-ajax
+      id="searchCampingAjx"
+      params='{"apiKey":"qpnQ2vCoFR8HMb_cf0vFfyP0B99yUKGL"}'
+      content-type="application/json"
+      handle-as="text"
+      on-response="handleUserResponse"
+      on-error="handleUserError">
+    </iron-ajax>
+
+    <!-- Acces to the camping selected -->
+    <app-data key="camping" data="{{camping}}"></app-data>
+    <!-- Access to user logged in -->
+    <app-data key="userData" data="{{storedUser}}"></app-data>
+    <!-- Acces to the error message -->
+    <app-data key="message" data="{{message}}"></app-data>
+    <!-- Access to the post searched -->
+    <app-data key="posts" data="{{posts}}"></app-data>
+
+    <!-- Main content -->
+    <!-- <a class="btn btn-xs btn-warning edit-form" href="/new-camping" on-click="searchBlogFunct">Edit</a> -->
+    <!-- <select id="fieldSearch" name="fieldSearch">
+      <option value="1">name</option>
+      <option value="2">description</option>
+
+    </select> -->
+    <iron-input bind-value="{{formData.searchfor}}">
+      <input style="color: black" id="username" type="text" placeholder="search camping" required="true" autofocus=""></iron-input>
+    </iron-input>
+    <div class="form-group searchForm">
+        <!-- <paper-button class="btn btn-sm btn-control btn-primary" raised class="primary" on-tap="searchCamping" href="all-campings">Search</paper-button> -->
+        <a class="btn btn-sm btn-control btn-primary" raised class="primary" on-click="searchCamping" href="all-campings">Search</a>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `search-camping`
+     * Element to find camping by its name, description, etc
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class SearchCamping extends Polymer.Element {
+      static get is() { return 'search-camping'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'search-camping'
+          },
+          formData: {
+            type: Object,
+            value: {}
+          },
+          posts: Object,
+          camping: Object,
+          searchBlog: Boolean
+        };
+      }
+      searchCamping() {
+        var search = '?q={"name": {"$regex": ".*' + this.formData.searchfor + '.*","$options": "i"}}'
+        console.log("query = " + search)
+        this.$.searchCampingAjx.method = "GET"
+        this.$.searchCampingAjx.url = "https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds" + search;
+        console.log("url = " + this.$.searchCampingAjx.url);
+        this.$.searchCampingAjx.generateRequest();
+      }
+      handleUserResponse(e,request) {
+        console.log("response = " + request.response);
+        this.posts = JSON.parse(request.response);
+        this.message = null;
+
+      }
+    }
+
+    window.customElements.define(SearchCamping.is, SearchCamping);
+  </script>
+</dom-module>

@@ -1,7 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
-<link rel="import" href="shared-styles.html">
 <link rel="import" href="app-data.html">
 
 <dom-module id="delete-camping">
@@ -26,7 +25,7 @@
     </iron-ajax>
     <app-data key="camping" data="{{camping}}"></app-data>
     <app-data key="message" data="{{message}}"></app-data>
-    <a class="btn btn-xs btn-danger delete-form" raised on-tap="delete" href="all-campings#topPageElement">Delete</a>
+    <a class="btn btn-xs btn-danger delete-form" raised on-tap="delete" href="all-campings">Delete</a>
 
   </template>
 

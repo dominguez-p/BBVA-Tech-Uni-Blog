@@ -34,3 +34,4 @@ CRONOLOGÍA DE LA PRÁCTICA:
 15.- Crear la funcionalidad de editar camping (utilizando el elemento new-camping):
   15.1.- Creamos el elemento edit-camping
   15.2.- Creamos el elemento delete-camping
+16.- Crear elemento search-camping para búsquedas
