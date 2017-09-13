@@ -1,0 +1,117 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="app-data.html">
+
+<dom-module id="new-comment">
+  <template>
+    <!-- Bootstrap css added here in order to works in all browsers -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <style include="shared-styles">
+         .edit-form {
+             display: inline;
+         }
+     </style>
+     <iron-ajax
+         id="newCommentAjax"
+         method="POST"
+         params='{"apiKey":"qpnQ2vCoFR8HMb_cf0vFfyP0B99yUKGL"}'
+         content-type="application/json"
+         handle-as="text"
+         on-response="handleUserResponse"
+         on-error="handleUserError">
+     </iron-ajax>
+     <app-data key="camping" data="{{camping}}"></app-data>
+     <app-data key="userData" data="{{storedUser}}"></app-data>
+     <div class="card">
+         <div hidden$="[[!storedUser.loggedin]]">
+             <h1>new comment form [[camping.name]]</h1>
+             <div class="form-group">
+                 <iron-autogrow-textarea id="textareaForm" bind-value="{{comment.texto}}" rows="4" placeholder="Description"></iron-autogrow-textarea>
+             </div>
+             <a href="/show-camping" on-click="newComment" class="btn btn-lg btn-control btn-primary">Submit!</a>
+         </div>
+         <div hidden$="[[storedUser.loggedin]]">
+             <p>You must be <a href="register-login">log in</a></p>
+         </div>
+         <a href="/show-camping">Go Back</a>
+     </div>
+
+
+  </template>
+
+  <script>
+    /**
+     * `new-comment`
+     * element to create comments in a post
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class NewComment extends Polymer.Element {
+      static get is() { return 'new-comment'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'new-comment'
+          },
+          camping: Object,
+          comment: {
+            type: Object,
+            value: {}
+          }
+        };
+      }
+      newComment() {
+          //creo el comentario en la tabla de comentarios de mLab
+          var comment = {
+              id: this.camping.id,
+              text: this.comment.texto,
+              author: this.storedUser.name,
+              canView: false
+          };
+          this.comment = comment;
+          console.log("nuevo comentario incluido: ")
+          console.log(this.comment);
+          this.$.newCommentAjax.body = this.comment;
+          this.$.newCommentAjax.method = "POST"
+          this.$.newCommentAjax.url = "https://api.mlab.com/api/1/databases/yelpcamp2017/collections/comments/";
+          this.$.newCommentAjax.generateRequest();
+          // SI VA TODO BIEN, INSERTO EL OBJETO COMENTARIO DE LA TABLA COMMENTS EN SU CAMPING CORRESPONDIENTE
+          //LUEGO...
+          console.log("comentario antes de insertar en camping" + this.comment)
+          this.insertCommentToCamping(this.comment);
+      }
+      insertCommentToCamping(arg_comment){
+          //solo inserto el id del comentario
+          this.camping.comments.push(arg_comment);
+          this.$.newCommentAjax.body = this.camping;
+          console.log("body a modificar: " + this.$.newCommentAjax.body);
+          this.$.newCommentAjax.method = "PUT"
+          this.$.newCommentAjax.url = "https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds/" + this.camping.id;
+          console.log("PUT: " + this.$.newCommentAjax.body);
+          this.$.newCommentAjax.generateRequest();
+      }
+      handleUserResponse(event){
+        var response = JSON.parse(event.detail.response);
+        this.camping.comments.push(response);
+        console.log("handleResponse: " + response);
+      }
+      handleUserError(event){
+          console.log("algo no ha ido bien...")
+          var message = {
+              showMsg: true,
+              errorMsg: false,
+              textMsg: event.detail.request.xhr.response
+          }
+          this.message = message;
+      }
+    }
+
+    window.customElements.define(NewComment.is, NewComment);
+  </script>
+</dom-module>

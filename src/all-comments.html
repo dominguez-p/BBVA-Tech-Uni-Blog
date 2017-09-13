@@ -1,0 +1,97 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+
+<!-- needed to return elements from this pages -->
+<link rel="import" href="app-data.html">
+
+<dom-module id="all-comments">
+  <template>
+    <!-- Bootstrap css added here in order to works in all browsers -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <style include="shared-styles">
+      :host {
+      display: block;
+
+      padding: 10px;
+      }
+      .thumbnail img {
+          width: 100%;
+      }
+
+      .thumbnail {
+          padding: 0;
+      }
+
+      .thumbnail .caption-full {
+          padding: 9px;
+      }
+
+      .delete-form {
+          display: inline;
+      }
+      .alert-success {
+          background: green;
+          color: white;
+      }
+      .alert-error {
+          background: red;
+          color: white;
+      }
+    </style>
+    <iron-ajax
+        id="manageCommentAjax"
+        params='{"apiKey":"qpnQ2vCoFR8HMb_cf0vFfyP0B99yUKGL"}'
+        content-type="application/json"
+        handle-as="text"
+        on-response="handleUserResponse"
+        on-error="handleUserError">
+    </iron-ajax>
+    <app-data key="camping" data="{{camping}}"></app-data>
+    <app-data key="message" data="{{message}}"></app-data>
+    <app-data key="userData" data="{{storedUser}}"></app-data>
+    <template is="dom-repeat" items="[[camping.comments]]">
+        <div class="well">
+            <div class="row">
+                <span class="pull-right">[[item.author]]</span>
+                <div class="col-md-12">
+                    <p>[[item.id]]</p>
+                    <p>[[item.text]]</p>
+                    <p>[[!item.canView]]</p>
+                    <div hidden$="[[!item.canView]]">
+                        <!-- <div hidden$="[[!canView]]"> -->
+                            <a on-click="editComment" class="btn btn-xs btn-warning edit-form" href="/show-camping">Edit</a>
+                            <a on-click="deleteComment" class="btn btn-xs btn-danger delete-form" raised on-tap="delete" href="show-camping">Delete</a>
+                        <!-- </div>   -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+  </template>
+
+  <script>
+    /**
+     * `all-comments`
+     * display all comment of a camping
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class AllComments extends Polymer.Element {
+      static get is() { return 'all-comments'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'all-comments'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(AllComments.is, AllComments);
+  </script>
+</dom-module>

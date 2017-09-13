@@ -35,3 +35,7 @@ CRONOLOGÍA DE LA PRÁCTICA:
   15.1.- Creamos el elemento edit-camping
   15.2.- Creamos el elemento delete-camping
 16.- Crear elemento search-camping para búsquedas
+17.- Crear el elemento google-map
+18.- Crear la funcionalidad de comentarios.
+  18.1.- Crear elemento new-comment
+  
