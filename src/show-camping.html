@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/google-map/google-map.html">
 
 <link rel="import" href="app-data.html">
 <link rel="import" href="shared-styles.html">
@@ -37,6 +38,13 @@
       a {
           color: white;
       }
+      .breakAll {
+        word-break: break-all;
+      }
+      google-map {
+        height: 250px;
+        border: 1px solid black;
+      }
     </style>
     <app-data key="camping" data="{{camping}}"></app-data>
 
@@ -62,8 +70,8 @@
                   <div class="caption-full">
                       <h4 class="pull-right">€[[camping.price]]/night</h4>
                       <h4><a href="[[camping.url]]" target="_blank">[[camping.name]]</a></h4>
-                      <p>[[camping.description]]</p>
 
+                        <p class="breakAll">[[camping.description]]</p>
 
                       <!-- //si tiene permiso -->
                       <!-- <a class="btn btn-xs btn-warning" href="#">Edit</a> -->
@@ -77,12 +85,18 @@
                             </div>
                             <p hidden$="[[canView]]"><em> info: you must be the author of the post to edit or delete this post</em></p>
                         </div>
-
+                        <hr>
+                        <div class="map">
+                          <google-map zoom="7" latitude=[[camping.latitude]] longitude=[[camping.longitude]] api-key="AIzaSyA582M4QmSOb08dn1qhexA9lr6a39FBJOY" fit-to-marker>
+                            <google-map-marker latitude=[[camping.latitude]] longitude=[[camping.longitude]] title="[[camping.name]]" draggable="true"></google-map-marker>
+                          </google-map>
+                        </div>
                       <!-- </form> -->
                       <!-- //si tiene permiso -->
                       <p>
                           <em>Submitted by: [[camping.author]]</em>
                       </p>
+                      <p><em>date: [[camping.date]]</em></p>
                       <div class="text-right">
                           <a class="btn btn-success" href="/new-comment">Add new comment</a>
                       </div>

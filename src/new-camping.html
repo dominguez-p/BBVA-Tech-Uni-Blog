@@ -71,12 +71,25 @@
                   </iron-input>
               </div>
               <div class="form-group">
+                  <iron-input bind-value="{{camping.latitude}}">
+                      <input class="form-control" type="number" name="latitude" placeholder="latitude">
+                  </iron-input>
+              </div>
+              <div class="form-group">
+                  <iron-input bind-value="{{camping.longitude}}">
+                      <input class="form-control" type="number" name="longitude" placeholder="longitude">
+                  </iron-input>
+              </div>
+              <div class="form-group">
                   <div hidden$="[[editBlog]]" >
                       <a href="/all-campings" on-click="createCampimg" class="btn btn-lg btn-control btn-primary">Create!</a>
                   </div>
                   <div hidden$="[[!editBlog]]">
                       <a href="/all-campings" on-click="editCamping" class="btn btn-lg btn-control btn-primary">Edit!</a>
-                  </div>                  
+                  </div>
+              </div>
+              <div class="form-group">
+                  <p><em>date: [[camping.date]]</em></p>
               </div>
           </div>
       </div>
@@ -112,14 +125,22 @@
                 },
                 textMsg: String
                 },
-            editBlog: Boolean
+            editBlog: Boolean,
+            posts: Array
         }
       }
+      // _getPosts(){
+      //   console.log("funcion getPosts");
+      //   this.$.createCampingAjx.url = 'https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds'
+      //   this.$.createCampingAjx.method = "GET"
+      //   this.$.createCampingAjx.generateRequest();
+      // }
       _setReqBody() {
           this.$.createCampingAjx.body = this.camping;
-          console.log(this.$.createCampingAjx.body);
+          // console.log(this.$.createCampingAjx.body);
       }
       createCampimg(){
+          var today = new Date();
           var camping = {
               name: this.camping.name,
               price: this.camping.price,
@@ -127,32 +148,45 @@
               description: this.camping.description,
               author: this.storedUser.name,
               url: this.camping.url,
+              date: today,
+              latitude: this.camping.latitude,
+              longitude: this.camping.longitude,
               comments: "[]"
           };
           this.camping = camping;
           console.log("funcion createCampimg " + this.camping.name);
-          this.$.createCampingAjx.method = "POST"
+          this.$.createCampingAjx.method = "POST";
           this.$.createCampingAjx.url = "https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds"
-          this._setReqBody();
+          this.$.createCampingAjx.body = this.camping;
           console.log("POST: " + this.$.createCampingAjx.body);
           this.$.createCampingAjx.generateRequest();
+          // this._getPosts();
       }
       editCamping() {
+          var today = new Date();
+          var description = this.camping.description.replace(/\r?\n/g, "<br>");
           var camping = {
               name: this.camping.name,
               price: this.camping.price,
               image: this.camping.image,
-              description: this.camping.description,
+              // description: this.camping.description,
+              description: description,
               author: this.storedUser.name,
-              url: this.camping.url
+              url: this.camping.url,
+              date: today,
+              latitude: this.camping.latitude,
+              longitude: this.camping.longitude,
           };
-          this._setReqBody();
-          this.$.createCampingAjx.method = "PUT"
+          console.log("funcion editCamping " + this.camping.name);
+          this.$.createCampingAjx.body = this.camping;
+          this.$.createCampingAjx.method = "PUT";
           this.$.createCampingAjx.url = "https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds/" + this.camping.id;
           console.log("PUT: " + this.$.createCampingAjx.body);
           this.$.createCampingAjx.generateRequest();
       }
       handleUserResponse(event) {
+        console.log("handleUserResponse!! ");
+
           console.log("Camping creado/editado!")
           var textMsg = ""
           if (this.editBlog) {
@@ -170,8 +204,11 @@
           }
           this.message = message;
           this.camping = null;
+
           // var response = JSON.parse(event.detail.response);
           // console.log("crear camping= " + response);
+        this.posts = JSON.parse(event.detail.response)
+        console.log("posts= " + this.posts);
       }
       handleUserError(event) {
           this.error = event.detail.request.xhr.response;

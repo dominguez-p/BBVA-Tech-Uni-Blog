@@ -90,7 +90,9 @@
                         <img src="[[item.image]]">
                         <h1>[[item.name]]</h1>
                         <div class="caption">
-                            <h4>[[item.description]]</h4>
+
+                                <h4>[[item.description]]</h4>
+
                         </div>
                         <p>
                             <em>Submitted by: [[item.author]]</em>
@@ -102,7 +104,11 @@
                              data-image$="[[item.image]]"
                              data-comments$="[[item.comments]]"
                              data-author$="[[item.author]]"
-                             data-url$=[[item.url]] class="btn btn-primary"
+                             data-url$=[[item.url]]
+                             data-date$=[[item.date]]
+                             data-latitude$=[[item.latitude]]
+                             data-longitude$=[[item.longitude]]
+                             class="btn btn-primary"
                              href="/show-camping">More Info</a>
                         </p>
                     </div>
@@ -142,10 +148,12 @@
       }
       handlePosts(e,request){
         console.log(request.response);
+        var today = Date();
         // this.set('posts',request.response);
         this.posts = request.response;
         this.message = null;
         this.editBlog = true;
+        console.log(today);
       }
       resetCamping() {
         // set camping to null
@@ -153,7 +161,10 @@
             name: "",
             price: "",
             image: "",
-            description: ""
+            description: "",
+            author: "",
+            url: "",
+            date: ""
         };
         console.log(this.storedUser);
         // if user is not logged in, set vble loggedin = false (could be undefined)
@@ -193,6 +204,9 @@
             description: event.target.dataset.description,
             author: event.target.dataset.author,
             url: event.target.dataset.url,
+            date: event.target.dataset.date,
+            latitude: event.target.dataset.latitude,
+            longitude: event.target.dataset.longitude,
             comments: JSON.parse(comment)
 
             }
