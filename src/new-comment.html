@@ -68,38 +68,34 @@
       }
       newComment() {
           //creo el comentario en la tabla de comentarios de mLab
+          var d = new Date();
+          var timestamp = d.valueOf();
+          console.log(timestamp);
           var comment = {
-              id: this.camping.id,
+              idComment: timestamp,
+              idCamping: this.camping.id,
               text: this.comment.texto,
               author: this.storedUser.name,
               canView: false
           };
-          this.comment = comment;
-          console.log("nuevo comentario incluido: ")
-          console.log(this.comment);
-          this.$.newCommentAjax.body = this.comment;
-          this.$.newCommentAjax.method = "POST"
-          this.$.newCommentAjax.url = "https://api.mlab.com/api/1/databases/yelpcamp2017/collections/comments/";
-          this.$.newCommentAjax.generateRequest();
-          // SI VA TODO BIEN, INSERTO EL OBJETO COMENTARIO DE LA TABLA COMMENTS EN SU CAMPING CORRESPONDIENTE
-          //LUEGO...
-          console.log("comentario antes de insertar en camping" + this.comment)
-          this.insertCommentToCamping(this.comment);
-      }
-      insertCommentToCamping(arg_comment){
-          //solo inserto el id del comentario
-          this.camping.comments.push(arg_comment);
+          this.camping.comments.push(comment)
           this.$.newCommentAjax.body = this.camping;
           console.log("body a modificar: " + this.$.newCommentAjax.body);
           this.$.newCommentAjax.method = "PUT"
           this.$.newCommentAjax.url = "https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds/" + this.camping.id;
           console.log("PUT: " + this.$.newCommentAjax.body);
           this.$.newCommentAjax.generateRequest();
-      }
-      handleUserResponse(event){
-        var response = JSON.parse(event.detail.response);
-        this.camping.comments.push(response);
-        console.log("handleResponse: " + response);
+
+          //
+          // this.comment = comment;
+          // this.$.newCommentAjax.body = this.comment;
+          // this.$.newCommentAjax.method = "POST"
+          // this.$.newCommentAjax.url = "https://api.mlab.com/api/1/databases/yelpcamp2017/collections/comments/";
+          // this.$.newCommentAjax.generateRequest();
+          // // SI VA TODO BIEN, INSERTO EL OBJETO COMENTARIO DE LA TABLA COMMENTS EN SU CAMPING CORRESPONDIENTE
+          // //LUEGO...
+          //
+          // this.insertCommentToCamping(this.camping.comment);
       }
       handleUserError(event){
           console.log("algo no ha ido bien...")
@@ -109,6 +105,10 @@
               textMsg: event.detail.request.xhr.response
           }
           this.message = message;
+      }
+
+      handleUserResponse(event){          
+          console.log("handleResponse: " + event.detail.response);
       }
     }
 

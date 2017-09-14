@@ -11,6 +11,7 @@
 
 
 
+
 <dom-module id="show-camping">
   <template>
     <!-- Bootstrap css added here in order to works in all browsers -->
@@ -37,14 +38,13 @@
       .edit-delete-form {
           display: inline;
       }
-      a {
-          color: white;
-      }
       .breakAll {
         word-break: break-all;
       }
       google-map {
         height: 250px;
+        width: 85%;
+        left: 5%;
         border: 1px solid black;
       }
     </style>
@@ -55,18 +55,18 @@
     <app-data key="grants" data="{{canView}}"></app-data>
 
     <a href="/all-campings">Volver</a>
-    <h1>[[camping.name]]</h1>
+    <h1 style="text-align: center">[[camping.name]]</h1>
     <div class="container">
       <div class="row">
-          <div class="col-md-3">
+          <!-- <div class="col-md-3">
               <p class="lead">YelpCamp</p>
               <div class="list-group">
                   <li class="list-group-item active">Info 1</li>
                   <li class="list-group-item">Info 2</li>
                   <li class="list-group-item">Info 3</li>
               </div>
-          </div>
-          <div class="col-md-9">
+          </div> -->
+          <div class="col-md-12">
               <div class="thumbnail">
                   <img class="image-responsive" src="[[camping.image]]">
                   <div class="caption-full">
@@ -79,14 +79,13 @@
                       <!-- <a class="btn btn-xs btn-warning" href="#">Edit</a> -->
                       <!-- <form class="delete-form" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST"> -->
                       <!-- <button class="btn btn-xs btn-danger">Delete</button> -->
-                        <div class="edit-delete-form">
-                            <div hidden$="[[!canView]]">
-                                <!-- <p>puede ver</p> -->
-                                  <edit-camping hidden$="[[!storedUser.loggedin]]"></edit-camping>
-                                  <delete-camping hidden$="[[!storedUser.loggedin]]" ></delete-camping>
-                            </div>
-                            <p hidden$="[[canView]]"><em> info: you must be the author of the post to edit or delete this post</em></p>
-                        </div>
+                      <div class="edit-delete-form">
+                          <div hidden$="[[!canView]]">
+                              <!-- <p>puede ver</p> -->
+                                <edit-camping hidden$="[[!storedUser.loggedin]]"></edit-camping>
+                                <delete-camping hidden$="[[!storedUser.loggedin]]" ></delete-camping>
+                          </div>
+                      </div>
                         <hr>
                         <div class="map">
                           <google-map zoom="7" latitude=[[camping.latitude]] longitude=[[camping.longitude]] api-key="AIzaSyA582M4QmSOb08dn1qhexA9lr6a39FBJOY" fit-to-marker>
@@ -95,13 +94,13 @@
                         </div>
                       <!-- </form> -->
                       <!-- //si tiene permiso -->
-                      <p>
-                          <em>Submitted by: [[camping.author]]</em>
-                      </p>
-                      <p><em>date: [[camping.date]]</em></p>
+                      <hr>
                       <div class="text-right">
-                          <a class="btn btn-success" href="/new-comment">Add new comment</a>
+                        <p><em>Submitted by: [[camping.author]]</em></p>
+                        <p><em>date: [[camping.date]]</em></p>
+                        <a class="btn btn-success" href="/new-comment">Add new comment</a>
                       </div>
+                      <p hidden$="[[canView]]"><em> info: you must be the author of the post to edit or delete this post</em></p>
                   </div>
                   <div>
                       <all-comments></all-comments>

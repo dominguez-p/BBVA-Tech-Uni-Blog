@@ -4,6 +4,7 @@
 
 <!-- needed to return elements from this pages -->
 <link rel="import" href="app-data.html">
+<link rel="import" href="all-campings.html">
 
 <dom-module id="all-comments">
   <template>
@@ -42,6 +43,7 @@
     </style>
     <iron-ajax
         id="manageCommentAjax"
+        method = 'PUT'
         params='{"apiKey":"qpnQ2vCoFR8HMb_cf0vFfyP0B99yUKGL"}'
         content-type="application/json"
         handle-as="text"
@@ -56,13 +58,18 @@
             <div class="row">
                 <span class="pull-right">[[item.author]]</span>
                 <div class="col-md-12">
-                    <p>[[item.id]]</p>
+                    <!-- <p>[[item.id]]</p> -->
                     <p>[[item.text]]</p>
-                    <p>[[!item.canView]]</p>
+                    <!-- <p>[[!item.canView]]</p> -->
                     <div hidden$="[[!item.canView]]">
                         <!-- <div hidden$="[[!canView]]"> -->
-                            <a on-click="editComment" class="btn btn-xs btn-warning edit-form" href="/show-camping">Edit</a>
-                            <a on-click="deleteComment" class="btn btn-xs btn-danger delete-form" raised on-tap="delete" href="show-camping">Delete</a>
+
+                            <!-- <a on-click="editComment" class="btn btn-xs btn-warning edit-form" href="/show-camping">Edit</a> -->
+                            <a on-click="deleteComment"
+                            data-id$="[[item.idComment]]"
+                            data-text$="[[item.text]]"
+                            data-author$="[[item.author]]" class="btn btn-xs btn-danger delete-form" raised on-tap="delete" href="show-camping">Delete</a>
+                            <!-- <delete-comment><delete-comment> -->
                         <!-- </div>   -->
                     </div>
                 </div>
@@ -90,6 +97,31 @@
           }
         };
       }
+      deleteComment(event) {
+        //recorro los comentarios y marco los que puede ver el usuario
+        var obj = this.camping.comments;
+        var idToDelete = event.target.dataset.id;
+        var miArray = new Array()
+          //por cada comentario
+          Object.keys(obj).forEach(function(key){
+              //si coincide el id del comentario con el seleccionado para borrar
+              if (obj[key].idComment == idToDelete) {
+                  // console.log("me salto este comentario")
+              } else {
+                //save data in array
+                  miArray.push(obj[key]);
+              }
+          });
+
+          this.camping.comments = miArray;
+          this.$.manageCommentAjax.body = this.camping;
+          this.$.manageCommentAjax.url ='https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds/' + this.camping.id;
+          this.$.manageCommentAjax.generateRequest();
+        }
+        handleUserResponse() {
+            console.log("comentario borrado!!");
+            alert("Comment deleted!")
+        }
     }
 
     window.customElements.define(AllComments.is, AllComments);

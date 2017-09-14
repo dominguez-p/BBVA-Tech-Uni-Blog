@@ -8,8 +8,7 @@
     "src/new-camping.html",
     "src/show-camping.html",
     "src/new-comment.html",
-    
-    "src/my-view404.html"
+    "src/view-404.html"
   ],
   "sources": [
     "src/**/*",
