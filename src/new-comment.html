@@ -1,5 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html">
+
+
 
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="app-data.html">
@@ -107,7 +110,7 @@
           this.message = message;
       }
 
-      handleUserResponse(event){          
+      handleUserResponse(event){
           console.log("handleResponse: " + event.detail.response);
       }
     }

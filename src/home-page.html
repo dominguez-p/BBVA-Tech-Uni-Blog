@@ -4,6 +4,8 @@
 <link rel="import" href="my-app.html">
 <link rel="import" href="register-login.html">
 
+
+
 <dom-module id="home-page">
   <template>
     <!-- Bootstrap css added here in order to works in all browsers -->
@@ -16,6 +18,7 @@
 
         padding: 10px;
       }
+
       /*animation effects*/
       body {
         background-color: #000;
@@ -104,7 +107,7 @@
     <!-- <p>Connected!!</p> -->
     <div id="landing-header">
       <h1>Welcome to YelpCamp!</h1>
-      <a href="/all-campings" class="btn btn-lg btn-success">View All Campgrounds</a>
+      <a id="homeBtn" href="/all-campings" class="btn btn-lg btn-success">View All Campgrounds</a>
     </div>
 
     <ul class="slideshow">

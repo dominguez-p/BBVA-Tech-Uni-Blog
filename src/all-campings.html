@@ -21,21 +21,7 @@
 
     <!-- custom styles -->
     <style include="shared-styles">
-      :host {
-          display: block;
-          padding: 10px;
-      }
-      .thumbnail img {
-          width: 100%;
-      }
 
-      .thumbnail {
-          padding: 0;
-      }
-
-      .thumbnail .caption-full {
-          padding: 9px;
-      }
 
     </style>
     <!-- <p>Connected!!</p> -->
@@ -44,7 +30,7 @@
       auto
       id="allCampingsAjax"
       url ='https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds'
-      params='{"apiKey":"qpnQ2vCoFR8HMb_cf0vFfyP0B99yUKGL"}'
+      params='{"s": "{rate:-1,name:1}","apiKey":"qpnQ2vCoFR8HMb_cf0vFfyP0B99yUKGL"}'
       handle-as="json"
       method="GET"
       content-type="application/json"
@@ -87,7 +73,7 @@
         <div class="row text-center" style="display:flex; flex-wrap: wrap;">
           <!-- show all the post from mongoDB, stored in "posts" array -->
             <template is="dom-repeat" items="[[posts]]">
-                <div class="col-lg-6 col-md-4 col-sm-6">
+                <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="thumbnail">
                         <img src="[[item.image]]">
                         <h1>[[item.name]]</h1>
@@ -98,6 +84,7 @@
                         </div>
                         <p>
                             <em>Submitted by: [[item.author]]</em>
+                            <em>rate: [[item.rate]]</em>
                         </p>
                         <p>
                             <a on-click="seleccionado" data-item$="[[item._id.$oid]]"
@@ -110,6 +97,7 @@
                              data-date$=[[item.date]]
                              data-latitude$=[[item.latitude]]
                              data-longitude$=[[item.longitude]]
+                             data-rate$=[[item.rate]]
                              class="btn btn-primary"
                              href="/show-camping">More Info</a>
                         </p>
@@ -209,6 +197,7 @@
             date: event.target.dataset.date,
             latitude: event.target.dataset.latitude,
             longitude: event.target.dataset.longitude,
+            rate: event.target.dataset.rate,
             comments: JSON.parse(comment)
 
             }
