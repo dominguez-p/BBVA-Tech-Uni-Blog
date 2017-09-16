@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/iron-input/iron-input.html">
+<!-- <link rel="import" href="../bower_components/iron-icons/iron-icons.html"> -->
 
 <link rel="import" href="app-data.html">
 <link rel="import" href="shared-styles.html">
@@ -38,7 +39,12 @@
     </template>
 
     <!-- Main content -->
-    <a href="/all-campings">Volver</a>
+    <div class="arrowBack">
+      <p></p>
+      <a href="/all-campings"><iron-icon icon="my-icons:arrow-back"></iron-icon></a>
+    </div>
+
+
     <div class="card">
       <!-- If it's NOT a registered user (form with user/password) -->
       <div id="unauthenticated" hidden$="[[storedUser.loggedin]]">
@@ -145,8 +151,8 @@
       handleUserResponse(event) {
         var success = false;
         var response = JSON.parse(event.detail.response);
-        console.log("response = " + response);
-        console.log("signup = " + this.signup);
+        // console.log("response = " + response);
+        // console.log("signup = " + this.signup);
         if (!this.signup) { //si es login
           if (response.data.count > 0) {
             success = true;
@@ -161,7 +167,7 @@
         } else { //es sign up
           success = true;
         }
-        console.log("success = " + success);
+        // console.log("success = " + success);
         if (success){
           this.error = '';
           this.storedUser = {

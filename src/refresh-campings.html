@@ -1,0 +1,73 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="app-data.html">
+
+<dom-module id="refresh-campings">
+  <template>
+    <!-- Bootstrap css added here in order to works in all browsers -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    
+    <!-- Ajax section to recover data from mongoDB vía API -->
+    <iron-ajax
+      auto
+      id="allCampingsAjax"
+      url ='https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds'
+      params='{"s": "{rate:-1,name:1}","apiKey":"qpnQ2vCoFR8HMb_cf0vFfyP0B99yUKGL"}'
+      handle-as="json"
+      method="GET"
+      content-type="application/json"
+      on-response="handlePosts">
+    </iron-ajax>
+
+    <!-- Access to the post searched -->
+    <app-data key="posts" data="{{posts}}"></app-data>
+
+    <a class="btn btn-primary btn-lg" on-click="refresh" href="/all-campings">Refresh</a>
+  </template>
+
+  <script>
+    /**
+     * `refresh-campings`
+     * Retrieve all campings from mongoDB
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class RefreshCampings extends Polymer.Element {
+      static get is() { return 'refresh-campings'; }
+      static get properties() {
+        return {
+          posts: Array,
+          prop1: {
+            type: String,
+            value: 'refresh-campings'
+          }
+        };
+      }
+      refresh() {
+          // remove user data
+          console.log("funcion getPosts");
+          this.$.allCampingsAjax.generateRequest();
+          this.camping = null;
+      }
+      handlePosts(e,request){
+        console.log(request.response);
+        // this.set('posts',request.response);
+        this.posts = request.response;
+        this.message = null;
+        this.editBlog = true;
+
+      }
+    }
+
+    window.customElements.define(RefreshCampings.is, RefreshCampings);
+  </script>
+</dom-module>

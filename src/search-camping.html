@@ -20,6 +20,9 @@
         color: black;
         padding-right: 200px;
       }
+      #btnSearch {
+        padding: 1px 10px;
+      }
 
     </style>
     <iron-ajax
@@ -48,11 +51,13 @@
 
     </select> -->
     <iron-input bind-value="{{formData.searchfor}}">
-      <input style="color: black" id="username" type="text" placeholder="search camping" autofocus=""></iron-input>
+      <input style="color: black" id="username" type="text" placeholder="search camping" autofocus="">
     </iron-input>
     <div class="form-group searchForm">
         <!-- <paper-button class="btn btn-sm btn-control btn-primary" raised class="primary" on-tap="searchCamping" href="all-campings">Search</paper-button> -->
-        <a class="btn btn-sm btn-control btn-primary" raised class="primary" on-click="searchCamping" href="all-campings">Search</a>
+        <a id="btnSearch" class="btn btn-sm btn-control btn-primary" raised class="primary" on-click="searchCamping" href="all-campings">
+          <iron-icon icon="my-icons-sm:search"></iron-icon>
+        </a>
     </div>
   </template>
 
@@ -79,19 +84,18 @@
           },
           posts: Object,
           camping: Object,
-          searchBlog: Boolean
+          searchBlog: Boolean,
+          storedUser: Object,
+          message: Object
         };
       }
       searchCamping() {
         var search = '?q={"name": {"$regex": ".*' + this.formData.searchfor + '.*","$options": "i"}}'
-        console.log("query = " + search)
         this.$.searchCampingAjx.method = "GET"
         this.$.searchCampingAjx.url = "https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds" + search;
-        console.log("url = " + this.$.searchCampingAjx.url);
         this.$.searchCampingAjx.generateRequest();
       }
-      handleUserResponse(e,request) {
-        console.log("response = " + request.response);
+      handleUserResponse(e,request) {        
         this.posts = JSON.parse(request.response);
         this.message = null;
 

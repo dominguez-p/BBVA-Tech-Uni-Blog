@@ -1,6 +1,7 @@
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
+  <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+
 
 <!-- needed to return elements from this pages -->
 <link rel="import" href="app-data.html">
@@ -9,7 +10,8 @@
 <link rel="import" href="new-camping.html">
 <link rel="import" href="show-camping.html">
 <link rel="import" href="new-comment.html">
-
+<link rel="import" href="my-icons.html">
+<link rel="import" href="refresh-campings.html">
 
 
 
@@ -21,21 +23,26 @@
 
     <!-- custom styles -->
     <style include="shared-styles">
+      :host {
+          display: block;
+          padding: 10px;
+      }
+      .thumbnail img {
+          width: 100%;
+      }
 
+      .thumbnail {
+          padding: 0;
+      }
+
+      .thumbnail .caption-full {
+          padding: 9px;
+      }
+      refresh-campings {
+        display: inline;
+      }
 
     </style>
-    <!-- <p>Connected!!</p> -->
-    <!-- Ajax section to recover data from mongoDB vía API -->
-    <iron-ajax
-      auto
-      id="allCampingsAjax"
-      url ='https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds'
-      params='{"s": "{rate:-1,name:1}","apiKey":"qpnQ2vCoFR8HMb_cf0vFfyP0B99yUKGL"}'
-      handle-as="json"
-      method="GET"
-      content-type="application/json"
-      on-response="handlePosts">
-    </iron-ajax>
 
     <!-- Access to user logged in -->
     <app-data key="userData" data="{{storedUser}}"></app-data>
@@ -62,11 +69,11 @@
     <div class="container">
         <header class="card">
             <div class="container">
-                <h1>Welcome to YelpCamp!</h1>
+                <h1>Welcome to BestCamp!</h1>
                 <p>View our hand-picked campgrounds from all over the world</p>
                 <p>
                     <a class="btn btn-primary btn-lg" href="/new-camping" on-click="resetCamping">Add New Campground</a>
-                    <a class="btn btn-primary btn-lg" on-click="getPosts" href="/all-campings">Refresh</a>
+                    <refresh-campings></refresh-campings>
                 </p>
             </div>
         </header>
@@ -84,7 +91,13 @@
                         </div>
                         <p>
                             <em>Submitted by: [[item.author]]</em>
-                            <em>rate: [[item.rate]]</em>
+                            <p>
+                              <em>rate: [[item.rate]]</em>
+                              <!-- <iron-icon style="color: #CCCC00; size=8" icon="icons:grade"> -->
+                              <iron-icon style="color: #E7F529;" icon="my-icons-sm:star"></iron-icon>
+                            </p>
+
+
                         </p>
                         <p>
                             <a on-click="seleccionado" data-item$="[[item._id.$oid]]"
@@ -99,7 +112,7 @@
                              data-longitude$=[[item.longitude]]
                              data-rate$=[[item.rate]]
                              class="btn btn-primary"
-                             href="/show-camping">More Info</a>
+                             href="/show-camping#h1">More Info</a>
                         </p>
                     </div>
                   </div>
@@ -130,21 +143,20 @@
             canView: Object
           }
       }
-      getPosts(){
-        console.log("funcion getPosts");
-        this.$.allCampingsAjax.generateRequest();
-        this.camping = null;
-
-      }
-      handlePosts(e,request){
-        console.log(request.response);
-        var today = Date();
-        // this.set('posts',request.response);
-        this.posts = request.response;
-        this.message = null;
-        this.editBlog = true;
-
-      }
+      // getPosts(){
+      //   console.log("funcion getPosts");
+      //   this.$.allCampingsAjax.generateRequest();
+      //   this.camping = null;
+      //
+      // }
+      // handlePosts(e,request){
+      //   console.log(request.response);
+      //   // this.set('posts',request.response);
+      //   this.posts = request.response;
+      //   this.message = null;
+      //   this.editBlog = true;
+      //
+      // }
       resetCamping() {
         // set camping to null
         this.camping = {

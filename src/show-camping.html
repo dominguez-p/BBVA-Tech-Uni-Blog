@@ -1,6 +1,9 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/google-map/google-map.html">
+<link rel="import" href="../bower_components/google-map/google-map-directions.html">
+<!-- <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/social-icons.html"> -->
 
 <link rel="import" href="app-data.html">
 <link rel="import" href="shared-styles.html">
@@ -54,7 +57,8 @@
 
     <app-data key="grants" data="{{canView}}"></app-data>
 
-    <a href="/all-campings">Volver</a>
+    <a href="/all-campings"><iron-icon icon="icons:arrow-back"></iron-icon></a>
+
     <h1 style="text-align: center">[[camping.name]]</h1>
     <div class="container">
       <div class="row">
@@ -88,10 +92,23 @@
                       </div>
                         <hr>
                         <div class="map">
-                          <google-map zoom="7" latitude=[[camping.latitude]] longitude=[[camping.longitude]] api-key="AIzaSyA582M4QmSOb08dn1qhexA9lr6a39FBJOY" fit-to-marker>
-                            <google-map-marker latitude=[[camping.latitude]] longitude=[[camping.longitude]] title="[[camping.name]]" draggable="true"></google-map-marker>
-                          </google-map>
+                            <!-- <p>How to go from: </p> <span>[[formData.goFrom]]</span>
+                            <iron-input bind-value="{{ObjSearch.goFrom}}">
+                              <input style="color: black" id="address" type="text" placeholder="Enter your address" autofocus=""></input>
+                            </iron-input> -->
+
+                            <!-- <google-map-directions map="{{map}}"
+                                start-address="Madrid"
+                                end-address=[[camping.latitude]],[[camping.longitude]]
+                                travel-mode="DRIVING"
+                                 api-key="AIzaSyA582M4QmSOb08dn1qhexA9lr6a39FBJOY" >
+                              </google-map-directions> -->
+                            <google-map map="{{map}}" zoom="7" latitude=[[camping.latitude]] longitude=[[camping.longitude]] api-key="AIzaSyA582M4QmSOb08dn1qhexA9lr6a39FBJOY" fit-to-marker>
+                              <google-map-marker latitude=[[camping.latitude]] longitude=[[camping.longitude]] title="[[camping.name]]" draggable="true"></google-map-marker>
+                            </google-map>
+
                         </div>
+
                       <!-- </form> -->
                       <!-- //si tiene permiso -->
                       <hr>
@@ -109,7 +126,7 @@
           </div>
       </div>
     </div>
-    <a href="/all-campings">Volver</a>
+    <a href="/all-campings"><iron-icon icon="icons:arrow-back"></iron-icon></a>
   </template>
 
   <script>
@@ -129,7 +146,8 @@
             type: String,
             value: 'show-camping'
           },
-          camping: Object
+          camping: Object,
+          ObjSearch: Object
         };
       }
     }

@@ -1,6 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="app-data.html">
+<link rel="import" href="my-icons.html">
 
 <dom-module id="log-out">
     <template>
@@ -19,12 +21,13 @@
               display: inline-block;
               font-size: 20px;
           }
+
       </style>
 
       <!-- Access to user logged in -->
       <app-data key="userData" data="{{storedUser}}"></app-data>
 
-      <!-- Main content -->  
+      <!-- Main content -->
       <template is="dom-if" if="{{!link}}">
           <div>
               <paper-button class="btn btn-lg btn-control btn-primary paper-button" raised on-tap="logout">Log Out</paper-button>
@@ -32,7 +35,7 @@
       </template>
 
       <template is="dom-if" if="{{link}}">
-          <a on-tap="logout" href>Log Out</a>
+          <a on-tap="logout" href><span><iron-icon icon="my-icons:exit-to-app"></iron-icon></span></a>
       </template>
     </template>
 

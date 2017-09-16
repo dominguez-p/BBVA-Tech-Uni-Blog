@@ -6,6 +6,7 @@
 
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="app-data.html">
+<link rel="import" href="my-icons.html">
 
 <dom-module id="new-comment">
   <template>
@@ -28,7 +29,12 @@
      </iron-ajax>
      <app-data key="camping" data="{{camping}}"></app-data>
      <app-data key="userData" data="{{storedUser}}"></app-data>
+     <div class="arrowBack">
+       <p></p>
+       <a href="/show-camping"><iron-icon icon="my-icons:arrow-back"></iron-icon></a>
+     </div>
      <div class="card">
+       <div style="width: 30%; margin: 25px auto">
          <div hidden$="[[!storedUser.loggedin]]">
              <h1>new comment form [[camping.name]]</h1>
              <div class="form-group">
@@ -39,7 +45,8 @@
          <div hidden$="[[storedUser.loggedin]]">
              <p>You must be <a href="register-login">log in</a></p>
          </div>
-         <a href="/show-camping">Go Back</a>
+       </div>
+
      </div>
 
 

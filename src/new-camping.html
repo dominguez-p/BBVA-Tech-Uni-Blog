@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 
 <!-- needed to return elements from this pages -->
 <link rel="import" href="app-data.html">
@@ -38,7 +39,10 @@
     <app-data key="message" data="{{message}}"></app-data>
 
     <!-- Main content -->
-    <a href="/all-campings">Go Back</a>
+    <div class="arrowBack">
+      <p></p>
+      <a href="/all-campings"><iron-icon icon="my-icons:arrow-back"></iron-icon></a>
+    </div>
     <div class="card">
       <div hidden$="[[storedUser.loggedin]]">
           <p>You must be <a href="register-login">log in</a></p>

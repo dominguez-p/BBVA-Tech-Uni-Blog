@@ -30,7 +30,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="lazy-import" href="app-data.html">
 <link rel="lazy-import" href="show-camping.html">
 <link rel="lazy-import" href="edit-camping.html">
+<link rel="import" href="refresh-campings.html">
 <link rel="import" href="search-camping.html">
+
 
 
 <dom-module id="my-app">
@@ -85,6 +87,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }*/
       search-camping {
         font-size: 14px;
+        padding-left: 20px;
       }
     </style>
 
@@ -110,8 +113,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <a name="home-page" href="[[rootPath]]home-page" style="text-align: left">Landing Page</a>
             <a name="all-campings" href="[[rootPath]]all-campings">Campings</a>
             <a name="register-login" href="[[rootPath]]register-login">Sign Up/Log In</a>
-            <a name="show-camping" href="[[rootPath]]show-camping">One Camping</a>
-            <a name="search-camping" href="[[rootPath]]search-camping">Search Camping</a>
+            <!-- <a name="refresh-campings" href="[[rootPath]]refresh-campings">refresh-campings</a> -->
+            <!-- <a name="show-camping" href="[[rootPath]]show-camping">One Camping</a>
+            <a name="search-camping" href="[[rootPath]]search-camping">Search Camping</a> -->
 
             <!-- <a name="view2" href="[[rootPath]]view2">View Two</a>
             <a name="view3" href="[[rootPath]]view3">View Three</a> -->
@@ -126,14 +130,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
               <div main-title>Welcamp!</div>
               <search-camping></search-camping>
-              <!-- <div>
-                <template is="dom-if" if="[[message.showMsg]]">
-                  <p hidden$="[[message.errorMsg]]" class="alert alert-success" role="alert"><strong>Info:</strong>[[message.textMsg]]</p>
-                  <p hidden$="[[!message.errorMsg]]" class="alert alert-danger" role="alert"><strong>Info:</strong>[[message.textMsg]]</p>
-                </template>
-              </div> -->
               <div hidden$="[[storedUser.loggedin]]">
-                <a name="register-login" href="/register-login">Log in</a>
+                <a name="register-login" href="/register-login"><iron-icon icon="my-icons:person"></iron-icon></a>
               </div>
               <div hidden$="[[!storedUser.loggedin]]">
                   <span class="greeting">Hi [[storedUser.name]]!</span>
@@ -155,6 +153,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <edit-camping name="edit-camping"></edit-camping>
             <search-camping name="search-camping"></search-camping>
             <new-comment name="new-comment"></new-comment>
+            <refresh-campings name="refresh-campings"></refresh-campings>
             <view-404 name="view-404"></view-404>
           </iron-pages>
         </app-header-layout>

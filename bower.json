@@ -19,7 +19,8 @@
     "paper-button": "^2.0.0",
     "iron-input": "^2.0.1",
     "iron-autogrow-textarea": "^2.1.0",
-    "google-map": "^2.0.2"
+    "google-map": "^2.0.2",
+    "iron-icons": "^2.0.1"
   },
   "resolutions": {
     "polymer": "^2.0.0"
