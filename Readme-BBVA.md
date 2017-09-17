@@ -38,4 +38,5 @@ CRONOLOGÍA DE LA PRÁCTICA:
 17.- Crear el elemento google-map
 18.- Crear la funcionalidad de comentarios.
   18.1.- Crear elemento new-comment
-  
+19.- Crear los el elemento my-icons customizado (más iconos y distintos tamaños)
+20.- Cambios en diseño para visualización desde dispositivos móviles.
