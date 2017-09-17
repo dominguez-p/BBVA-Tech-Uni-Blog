@@ -40,3 +40,11 @@ CRONOLOGÍA DE LA PRÁCTICA:
   18.1.- Crear elemento new-comment
 19.- Crear los el elemento my-icons customizado (más iconos y distintos tamaños)
 20.- Cambios en diseño para visualización desde dispositivos móviles.
+21.- Subimos los cambios al repositorio git
+22.- Construimos con "polymer build" el proyecto para crear el docker
+23.- Creamos el docker con "sudo docker build -t <nombre> ."
+24.- Subimos el docker a cloud-docker:
+  24.1.- "sudo docker tag <nombre> <usuario/repositorio>"
+  24.2.- "sudo docker push <usuario/repositorio>"
+25.- Desplegamos el docker en openshift (Deploy image/create route)
+26.- Link del proyecto:
