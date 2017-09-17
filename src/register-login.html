@@ -19,6 +19,9 @@
       :host {
         display: block;
       }
+      input {
+        width: 100%;
+      }
     </style>
 
     <!-- Ajax section to connect with postgreSQL -->
@@ -41,7 +44,7 @@
     <!-- Main content -->
     <div class="arrowBack">
       <p></p>
-      <a href="/all-campings"><iron-icon icon="my-icons:arrow-back"></iron-icon></a>
+      <a href="/all-campings"><iron-icon style="color: #337ab7;" icon="my-icons:arrow-back"></iron-icon></a>
     </div>
 
 
@@ -56,7 +59,7 @@
             <div class="form-group">
               <!-- <label for="username">Username</label> -->
               <iron-input bind-value="{{formData.nombre}}">
-                <input style="width: 100%" id="username" type="text" placeholder="username" required="true" autofocus=""></iron-input>
+                <input  id="username" type="text" placeholder="username" required="true" autofocus=""></iron-input>
               </iron-input>
             </div>
             <div class="form-group">

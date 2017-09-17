@@ -31,14 +31,15 @@
      <app-data key="userData" data="{{storedUser}}"></app-data>
      <div class="arrowBack">
        <p></p>
-       <a href="/show-camping"><iron-icon icon="my-icons:arrow-back"></iron-icon></a>
+       <a href="/show-camping"><iron-icon style="color: #337ab7;"  icon="my-icons:arrow-back"></iron-icon></a>
      </div>
      <div class="card">
-       <div style="width: 30%; margin: 25px auto">
+       <div class="row">
+         <div style="width: 30%; margin: 25px auto">
          <div hidden$="[[!storedUser.loggedin]]">
              <h1>new comment form [[camping.name]]</h1>
              <div class="form-group">
-                 <iron-autogrow-textarea id="textareaForm" bind-value="{{comment.texto}}" rows="4" placeholder="Description"></iron-autogrow-textarea>
+                 <iron-autogrow-textarea id="textareaForm" class="form-control" bind-value="{{comment.texto}}" rows="4" placeholder="Description"></iron-autogrow-textarea>
              </div>
              <a href="/show-camping" on-click="newComment" class="btn btn-lg btn-control btn-primary">Submit!</a>
          </div>

@@ -41,7 +41,7 @@
     <!-- Main content -->
     <div class="arrowBack">
       <p></p>
-      <a href="/all-campings"><iron-icon icon="my-icons:arrow-back"></iron-icon></a>
+      <a href="/all-campings"><iron-icon style="color: #337ab7;" icon="my-icons:arrow-back"></iron-icon></a>
     </div>
     <div class="card">
       <div hidden$="[[storedUser.loggedin]]">
@@ -53,7 +53,7 @@
           <div style="width: 30%; margin: 25px auto">
               <div class="form-group">
                   <iron-input bind-value="{{camping.name}}">
-                      <input class="form-camping" type="text" name="name" placeholder="name">
+                      <input class="form-control" type="text" name="name" placeholder="name">
                   </iron-input>
               </div>
               <div class="form-group">
@@ -67,7 +67,7 @@
                   </iron-input>
               </div>
               <div class="form-group">
-                  <iron-autogrow-textarea id="textareaForm" bind-value="{{camping.description}}" rows="4" placeholder="Description"></iron-autogrow-textarea>
+                  <iron-autogrow-textarea id="textareaForm" class="form-control" bind-value="{{camping.description}}" rows="4" placeholder="Description"></iron-autogrow-textarea>
               </div>
               <div class="form-group">
                   <iron-input bind-value="{{camping.url}}">

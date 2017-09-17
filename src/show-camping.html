@@ -11,7 +11,7 @@
 <link rel="import" href="delete-camping.html">
 <link rel="import" href="all-campings.html">
 <link rel="import" href="all-comments.html">
-
+<link rel="import" href="my-icons.html">
 
 
 
@@ -57,7 +57,7 @@
 
     <app-data key="grants" data="{{canView}}"></app-data>
 
-    <a href="/all-campings"><iron-icon icon="icons:arrow-back"></iron-icon></a>
+    <a href="/all-campings"><iron-icon style="color: #337ab7;" icon="my-icons:arrow-back"></iron-icon></a>
 
     <h1 style="text-align: center">[[camping.name]]</h1>
     <div class="container">
@@ -76,8 +76,10 @@
                   <div class="caption-full">
                       <h4 class="pull-right"><p class="text-rigth">rate: [[camping.rate]]</p> €[[camping.price]]/night</h4>
                       <h4><a href="[[camping.url]]" target="_blank">[[camping.name]]</a></h4>
+                      <div>
+                        <p >[[camping.description]]</p>
+                      </div>
 
-                        <p class="breakAll">[[camping.description]]</p>
 
                       <!-- //si tiene permiso -->
                       <!-- <a class="btn btn-xs btn-warning" href="#">Edit</a> -->
@@ -103,7 +105,7 @@
                                 travel-mode="DRIVING"
                                  api-key="AIzaSyA582M4QmSOb08dn1qhexA9lr6a39FBJOY" >
                               </google-map-directions> -->
-                            <google-map map="{{map}}" zoom="7" latitude=[[camping.latitude]] longitude=[[camping.longitude]] api-key="AIzaSyA582M4QmSOb08dn1qhexA9lr6a39FBJOY" fit-to-marker>
+                            <google-map zoom="7" latitude=[[camping.latitude]] longitude=[[camping.longitude]] api-key="AIzaSyA582M4QmSOb08dn1qhexA9lr6a39FBJOY" fit-to-marker>
                               <google-map-marker latitude=[[camping.latitude]] longitude=[[camping.longitude]] title="[[camping.name]]" draggable="true"></google-map-marker>
                             </google-map>
 

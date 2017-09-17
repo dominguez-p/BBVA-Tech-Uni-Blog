@@ -85,9 +85,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           display: inline-block;
           padding-right: 10px;
       }*/
+      .greeting {
+        text-align: center;
+        font-size: 16px;
+        padding-right: 5px;
+        vertical-align: bottom;
+      }
       search-camping {
         font-size: 14px;
         padding-left: 20px;
+      }
+      iron-icon {
+        margin-right: 10px;
+        color: white;
       }
     </style>
 
@@ -95,6 +105,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-data key="userData" data="{{storedUser}}"></app-data>
     <!-- Acces to the error message -->
     <app-data key="message" data="{{message}}"></app-data>
+    <!-- Access to know if the form is called from "Create" or from "Edit" -->
+    <app-data key="editBlog" data="{{editBlog}}"></app-data>
 
     <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
     <app-route
@@ -129,12 +141,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <app-toolbar>
               <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
               <div main-title>Welcamp!</div>
-              <search-camping></search-camping>
+
+              <a href="/new-camping" on-click="resetCamping">
+                <iron-icon icon="my-icons:add"></iron-icon>
+              </a>
+              <refresh-campings></refresh-campings>
+              <a href="/search-camping">
+                <iron-icon icon="my-icons:search"></iron-icon>
+              </a>
               <div hidden$="[[storedUser.loggedin]]">
                 <a name="register-login" href="/register-login"><iron-icon icon="my-icons:person"></iron-icon></a>
               </div>
               <div hidden$="[[!storedUser.loggedin]]">
                   <span class="greeting">Hi [[storedUser.name]]!</span>
+              </div>
+              <div hidden$="[[!storedUser.loggedin]]">
                   <log-out stored-user="{{storedUser}}" link></log-out>
               </div>
             </app-toolbar>
@@ -187,6 +208,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             loggedin: false
           },
           message: Object,
+          camping: Object,
+          editBlog: Boolean
         };
       }
 
@@ -220,6 +243,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _showPage404() {
         this.page = 'view-404';
+      }
+      resetCamping() {
+        // set camping to null
+        this.camping = {
+            name: "",
+            price: "",
+            image: "",
+            description: "",
+            author: "",
+            url: "",
+            date: ""
+        };
+        console.log(this.storedUser);
+        // if user is not logged in, set vble loggedin = false (could be undefined)
+        if(this.storedUser == ""){
+            this.storedUser = {
+            loggedin: false
+            };
+            console.log("user: " + this.storedUser.loggedin);
+        }
+        this.editBlog = false;
+        console.log("this.editBlog = " + this.editBlog)
       }
     }
 
