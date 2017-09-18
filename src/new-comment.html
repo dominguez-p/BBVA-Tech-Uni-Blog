@@ -27,8 +27,14 @@
          on-response="handleUserResponse"
          on-error="handleUserError">
      </iron-ajax>
-     <app-data key="camping" data="{{camping}}"></app-data>
+
+     <!-- Access to user logged in -->
      <app-data key="userData" data="{{storedUser}}"></app-data>
+     <!-- Acces to the camping selected -->
+     <app-data key="camping" data="{{camping}}"></app-data>
+     <!-- Acces to the error message -->
+     <app-data key="message" data="{{message}}"></app-data>
+
      <div class="arrowBack">
        <p></p>
        <a href="/show-camping"><iron-icon style="color: #337ab7;"  icon="my-icons:arrow-back"></iron-icon></a>
@@ -74,7 +80,8 @@
           comment: {
             type: Object,
             value: {}
-          }
+          },
+          message: Object
         };
       }
       newComment() {
@@ -120,6 +127,8 @@
 
       handleUserResponse(event){
           console.log("handleResponse: " + event.detail.response);
+          console.log("comentario creado!!");
+          alert("Comment created!, please refresh the page")
       }
     }
 

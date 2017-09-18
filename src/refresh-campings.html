@@ -31,6 +31,17 @@
 
     <!-- Access to the post searched -->
     <app-data key="posts" data="{{posts}}"></app-data>
+    <!-- Access to user logged in -->
+    <app-data key="userData" data="{{storedUser}}"></app-data>
+    <!-- Access to know if the form is called from "Create" or from "Edit" -->
+    <app-data key="editBlog" data="{{editBlog}}"></app-data>
+    <!-- Acces to the camping selected -->
+    <app-data key="camping" data="{{camping}}"></app-data>
+    <!-- Access to the information if this camping can be edited -->
+    <app-data key="grants" data="{{canView}}"></app-data>
+    <!-- Acces to the error message -->
+    <app-data key="message" data="{{message}}"></app-data>
+    
 
     <a on-click="refresh" href="/all-campings">
       <iron-icon icon="my-icons:refresh"></iron-icon>
@@ -54,7 +65,12 @@
           prop1: {
             type: String,
             value: 'refresh-campings'
-          }
+          },
+          camping: Object,
+          message: Object,
+          editBlog: Boolean,
+          storedUser: Object,
+          canView: Object
         };
       }
       refresh() {
