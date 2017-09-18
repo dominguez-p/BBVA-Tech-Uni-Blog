@@ -7,15 +7,15 @@
   <template>
     <!-- Bootstrap css added here in order to works in all browsers -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+    <!-- custom styles (empty, uses shared styles only) -->
     <style include="shared-styles">
 
     </style>
-    <!-- Access to user logged in -->
+    <!-- app-data used to store information (stored user, camping object, error, message, etc) -->
     <app-data key="userData" data="{{storedUser}}"></app-data>
     <app-data key="editBlog" data="{{editBlog}}"></app-data>
 
-    <!-- Main content -->
+    <!-- Main content (edit camping button) -->
     <a class="btn btn-xs btn-warning edit-form" href="/new-camping" on-click="editBlogFunct">Edit</a>
   </template>
 
@@ -42,6 +42,7 @@
         }
       }
       editBlogFunct() {
+        //set editBlog = true in order to reuse new-camping element
         this.editBlog = true;
       }
     }

@@ -11,7 +11,7 @@
   <template>
     <!-- Bootstrap css added here in order to works in all browsers -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+    <!-- custom style -->
     <style include="shared-styles">
       :host {
         display: block;
@@ -28,6 +28,7 @@
         width: 100%;
       }
     </style>
+    <!-- iron ajax element -->
     <iron-ajax
       id="searchCampingAjx"
       params='{"s": "{rate:-1,name:1}","apiKey":"qpnQ2vCoFR8HMb_cf0vFfyP0B99yUKGL"}'
@@ -47,18 +48,13 @@
     <app-data key="posts" data="{{posts}}"></app-data>
 
     <!-- Main content -->
-    <!-- <a class="btn btn-xs btn-warning edit-form" href="/new-camping" on-click="searchBlogFunct">Edit</a> -->
-    <!-- <select id="fieldSearch" name="fieldSearch">
-      <option value="1">name</option>
-      <option value="2">description</option>
-
-    </select> -->
+    <!-- back to previous page -->
     <div class="arrowBack">
       <p></p>
       <a href="/all-campings"><iron-icon style="color: #337ab7;" icon="my-icons:arrow-back"></iron-icon></a>
     </div>
 
-
+    <!-- search form -->
     <div class="card">
       <div class="row">
         <div style="width: 30%; margin: 25px auto">
@@ -67,12 +63,9 @@
             <iron-input bind-value="{{formData.searchfor}}">
               <input id="searchtext" class="form-control" type="text" placeholder="search camping" autofocus="">
             </iron-input>
-          <!-- </div>
-          <div class="form-group searchForm"> -->
-              <!-- <paper-button class="btn btn-sm btn-control btn-primary" raised class="primary" on-tap="searchCamping" href="all-campings">Search</paper-button> -->
-              <a id="btnSearch" class="btn btn-sm btn-control btn-primary" raised class="primary" on-click="searchCamping" href="all-campings">
-                <iron-icon icon="my-icons-sm:search"></iron-icon>
-              </a>
+            <a id="btnSearch" class="btn btn-sm btn-control btn-primary" raised class="primary" on-click="searchCamping" href="all-campings">
+              <iron-icon icon="my-icons-sm:search"></iron-icon>
+            </a>
           </div>
         </div>
       </div>
@@ -97,6 +90,7 @@
             type: String,
             value: 'search-camping'
           },
+          // vbles needed
           formData: {
             type: Object,
             value: {}
@@ -109,18 +103,22 @@
         };
       }
       searchCamping() {
+        // compose string url query
         var search = '?q={"name": {"$regex": ".*' + this.formData.searchfor + '.*","$options": "i"}}'
+        // set method
         this.$.searchCampingAjx.method = "GET"
+        // set url (url + search previous vble)
         this.$.searchCampingAjx.url = "https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds" + search;
+        // execute get
         this.$.searchCampingAjx.generateRequest();
       }
       handleUserResponse(e,request) {
+        // update post array with the query results
         this.posts = JSON.parse(request.response);
+        // and no error message
         this.message = null;
-
       }
     }
-
     window.customElements.define(SearchCamping.is, SearchCamping);
   </script>
 </dom-module>

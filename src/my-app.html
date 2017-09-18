@@ -20,11 +20,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="my-icons.html">
 
 <link rel="lazy-import" href="home-page.html">
 <link rel="lazy-import" href="view-404.html">
-<link rel="import" href="all-campings.html">
 <link rel="lazy-import" href="register-login.html">
 <link rel="lazy-import" href="new-camping.html">
 <link rel="lazy-import" href="app-data.html">
@@ -32,12 +30,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="lazy-import" href="edit-camping.html">
 <link rel="lazy-import" href="refresh-campings.html">
 <link rel="lazy-import" href="search-camping.html">
-
+<link rel="import" href="all-campings.html">
+<link rel="import" href="my-icons.html">
 
 
 <dom-module id="my-app">
   <template>
-
+    <!-- Custom style -->
     <style>
       :host {
         --app-primary-color: #4285f4;
@@ -118,51 +117,49 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         tail="{{subroute}}"></app-route>
 
 
-
       <app-drawer-layout fullbleed narrow="{{narrow}}">
-        <!-- Drawer content -->
+        <!-- Drawer content (left menú options) -->
         <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]" align="left">
           <app-toolbar>Menu</app-toolbar>
           <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
             <a name="home-page" href="[[rootPath]]home-page" style="text-align: left">Landing Page</a>
             <a name="all-campings" href="[[rootPath]]all-campings">Campings</a>
             <a name="register-login" href="[[rootPath]]register-login">Sign Up/Log In</a>
-            <!-- <a name="refresh-campings" href="[[rootPath]]refresh-campings">refresh-campings</a> -->
-            <!-- <a name="show-camping" href="[[rootPath]]show-camping">One Camping</a>
-            <a name="search-camping" href="[[rootPath]]search-camping">Search Camping</a> -->
-
-            <!-- <a name="view2" href="[[rootPath]]view2">View Two</a>
-            <a name="view3" href="[[rootPath]]view3">View Three</a> -->
           </iron-selector>
         </app-drawer>
 
         <!-- Main content -->
         <app-header-layout has-scrolling-region>
-
           <app-header slot="header" condenses reveals effects="waterfall">
             <app-toolbar>
+              <!-- Navigation bar -->
               <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
               <div main-title>Welcamp!</div>
-
+              <!-- new campground icon -->
               <a href="/new-camping" on-click="resetCamping">
                 <iron-icon icon="my-icons:add"></iron-icon>
               </a>
+              <!-- refresh element -->
               <refresh-campings></refresh-campings>
+              <!-- search icon -->
               <a href="/search-camping">
                 <iron-icon icon="my-icons:search"></iron-icon>
               </a>
+              <!-- log in icon -->
               <div hidden$="[[storedUser.loggedin]]">
                 <a name="register-login" href="/register-login"><iron-icon icon="my-icons:person"></iron-icon></a>
               </div>
+              <!-- welcome name if user is logged in -->
               <div hidden$="[[!storedUser.loggedin]]">
                   <span class="greeting">Hi [[storedUser.name]]!</span>
               </div>
+              <!-- log-out icon if user is logged in -->
               <div hidden$="[[!storedUser.loggedin]]">
                   <log-out stored-user="{{storedUser}}" link></log-out>
               </div>
             </app-toolbar>
           </app-header>
-
+          <!-- Iron pages -->
           <iron-pages
               selected="[[page]]"
               attr-for-selected="name"
@@ -234,7 +231,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _pageChanged(page) {
         // Load page import on demand. Show 404 page if fails
-//"my-" removed, I'll name all my elements with "-"
+        //"my-" removed, I'll name all my elements with "-"
         var resolvedPageUrl = this.resolveUrl(page + '.html');
         Polymer.importHref(
             resolvedPageUrl,
@@ -247,7 +244,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.page = 'view-404';
       }
       resetCamping() {
-        // set camping to null
+        // This function reset all objects in order to create a campground (camping, editBlog)
         this.camping = {
             name: "",
             price: "",

@@ -2,8 +2,7 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/google-map/google-map.html">
 <link rel="import" href="../bower_components/google-map/google-map-directions.html">
-<!-- <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/iron-icons/social-icons.html"> -->
+
 
 <link rel="import" href="app-data.html">
 <link rel="import" href="shared-styles.html">
@@ -19,7 +18,7 @@
   <template>
     <!-- Bootstrap css added here in order to works in all browsers -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+    <!-- custom style -->
     <style include="shared-styles">
       :host {
         display: block;
@@ -51,83 +50,71 @@
         border: 1px solid black;
       }
     </style>
+    <!-- app-data used to store information (stored user, camping object, error, message, etc) -->
+    <!-- Acces to the camping selected -->
     <app-data key="camping" data="{{camping}}"></app-data>
-
+    <!-- Access to user logged in -->
     <app-data key="userData" data="{{storedUser}}"></app-data>
-
+    <!-- Access to the information if this camping can be edited -->
     <app-data key="grants" data="{{canView}}"></app-data>
 
+    <!-- back to previous page -->
     <a href="/all-campings"><iron-icon style="color: #337ab7;" icon="my-icons:arrow-back"></iron-icon></a>
-
+    <!-- Main content -->
+    <!-- Campground title -->
     <h1 style="text-align: center">[[camping.name]]</h1>
     <div class="container">
       <div class="row">
-          <!-- <div class="col-md-3">
-              <p class="lead">YelpCamp</p>
-              <div class="list-group">
-                  <li class="list-group-item active">Info 1</li>
-                  <li class="list-group-item">Info 2</li>
-                  <li class="list-group-item">Info 3</li>
-              </div>
-          </div> -->
           <div class="col-md-12">
               <div class="thumbnail">
+                  <!-- Campground image -->
                   <img class="image-responsive" src="[[camping.image]]">
                   <div class="caption-full">
+                    <!-- Campground rate/price -->
                       <h4 class="pull-right"><p class="text-rigth">rate: [[camping.rate]]</p> €[[camping.price]]/night</h4>
+                      <!-- Campground subtitle (webpage link) -->
                       <h4><a href="[[camping.url]]" target="_blank">[[camping.name]]</a></h4>
+                      <!-- Campground description -->
                       <div>
                         <p >[[camping.description]]</p>
                       </div>
-
-
-                      <!-- //si tiene permiso -->
-                      <!-- <a class="btn btn-xs btn-warning" href="#">Edit</a> -->
-                      <!-- <form class="delete-form" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST"> -->
-                      <!-- <button class="btn btn-xs btn-danger">Delete</button> -->
+                      <!-- edit / delete camping buttons -->
                       <div class="edit-delete-form">
+                        <!-- only if user logged is the author -->
                           <div hidden$="[[!canView]]">
-                              <!-- <p>puede ver</p> -->
                                 <edit-camping hidden$="[[!storedUser.loggedin]]"></edit-camping>
                                 <delete-camping hidden$="[[!storedUser.loggedin]]" ></delete-camping>
                           </div>
                       </div>
-                        <hr>
-                        <div class="map">
-                            <!-- <p>How to go from: </p> <span>[[formData.goFrom]]</span>
-                            <iron-input bind-value="{{ObjSearch.goFrom}}">
-                              <input style="color: black" id="address" type="text" placeholder="Enter your address" autofocus=""></input>
-                            </iron-input> -->
-
-                            <!-- <google-map-directions map="{{map}}"
-                                start-address="Madrid"
-                                end-address=[[camping.latitude]],[[camping.longitude]]
-                                travel-mode="DRIVING"
-                                 api-key="AIzaSyA582M4QmSOb08dn1qhexA9lr6a39FBJOY" >
-                              </google-map-directions> -->
-                            <google-map zoom="7" latitude=[[camping.latitude]] longitude=[[camping.longitude]] api-key="AIzaSyA582M4QmSOb08dn1qhexA9lr6a39FBJOY" fit-to-marker>
-                              <google-map-marker latitude=[[camping.latitude]] longitude=[[camping.longitude]] title="[[camping.name]]" draggable="true"></google-map-marker>
-                            </google-map>
-
-                        </div>
-
-                      <!-- </form> -->
-                      <!-- //si tiene permiso -->
+                      <!-- style line -->
                       <hr>
+                      <!-- google map element -->
+                      <div class="map">
+                          <google-map zoom="7" latitude=[[camping.latitude]] longitude=[[camping.longitude]] api-key="AIzaSyA582M4QmSOb08dn1qhexA9lr6a39FBJOY" fit-to-marker>
+                            <google-map-marker latitude=[[camping.latitude]] longitude=[[camping.longitude]] title="[[camping.name]]" draggable="true"></google-map-marker>
+                          </google-map>
+
+                      </div>
+                      <!-- style line -->
+                      <hr>
+                      <!-- comments area -->
                       <div class="text-right">
                         <p><em>Submitted by: [[camping.author]]</em></p>
                         <p><em>date: [[camping.date]]</em></p>
+                        <!-- add comment button -->
                         <a class="btn btn-success" href="/new-comment">Add new comment</a>
                       </div>
                       <p hidden$="[[canView]]"><em> info: you must be the author of the post to edit or delete this post</em></p>
                   </div>
                   <div>
+                      <!-- Campground's comments -->
                       <all-comments></all-comments>
                   </div>
               </div>
           </div>
       </div>
     </div>
+    <!-- back to previous page -->
     <a href="/all-campings"><iron-icon icon="icons:arrow-back"></iron-icon></a>
   </template>
 

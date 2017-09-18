@@ -15,12 +15,13 @@
   <template>
     <!-- Bootstrap css added here in order to works in all browsers -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+    <!-- custom style -->
     <style include="shared-styles">
       :host {
         display: block;
       }
     </style>
+    <!-- iron ajax elements -->
     <iron-ajax
       id="createCampingAjx"
       params='{"apiKey":"qpnQ2vCoFR8HMb_cf0vFfyP0B99yUKGL"}'
@@ -39,15 +40,20 @@
     <app-data key="message" data="{{message}}"></app-data>
 
     <!-- Main content -->
+    <!-- back to previous page -->
     <div class="arrowBack">
       <p></p>
       <a href="/all-campings"><iron-icon style="color: #337ab7;" icon="my-icons:arrow-back"></iron-icon></a>
     </div>
+    <!-- card style -->
     <div class="card">
+      <!-- if not logged can't add campgrounds -->
       <div hidden$="[[storedUser.loggedin]]">
           <p>You must be <a href="register-login">log in</a></p>
       </div>
+      <!-- if user is logged  -->
       <div hidden$="[[!storedUser.loggedin]]">
+        <!-- Create/Edit campground, depend on editBlog vble value -->
           <h1 hidden$="[[editBlog]]" style="text-align: center">Create a new campground</h1>
           <h1 hidden$="[[!editBlog]]" style="text-align: center">Edit campground</h1>
           <div style="width: 30%; margin: 25px auto">
@@ -138,18 +144,14 @@
             posts: Array
         }
       }
-      // _getPosts(){
-      //   console.log("funcion getPosts");
-      //   this.$.createCampingAjx.url = 'https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds'
-      //   this.$.createCampingAjx.method = "GET"
-      //   this.$.createCampingAjx.generateRequest();
-      // }
+
       _setReqBody() {
           this.$.createCampingAjx.body = this.camping;
-          // console.log(this.$.createCampingAjx.body);
       }
       createCampimg(){
+          // set date = today
           var today = new Date();
+          // set object camping = form of this element
           var camping = {
               name: this.camping.name,
               price: this.camping.price,
@@ -163,18 +165,24 @@
               rate: this.camping.rate,
               comments: "[]"
           };
+          // to store camping object, accessible vía app-data element
           this.camping = camping;
-          console.log("funcion createCampimg " + this.camping.name);
+          // set method to post (create)
           this.$.createCampingAjx.method = "POST";
+          // set url here, not in ajax-component because element is for create and edit, to avoid errors
           this.$.createCampingAjx.url = "https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds"
+          // set body
           this.$.createCampingAjx.body = this.camping;
-          console.log("POST: " + this.$.createCampingAjx.body);
+          // execute post
           this.$.createCampingAjx.generateRequest();
           // this._getPosts();
       }
       editCamping() {
+          // set date = today
           var today = new Date();
+          // to display properly in text area
           var description = this.camping.description.replace(/\r?\n/g, "<br>");
+          // set object camping = form of this element
           var camping = {
               name: this.camping.name,
               price: this.camping.price,
@@ -188,18 +196,17 @@
               longitude: this.camping.longitude,
               rate: this.camping.rate
           };
-          console.log("funcion editCamping " + this.camping.name);
-          console.log("rate= " + this.camping.rate);
+          // set body
           this.$.createCampingAjx.body = this.camping;
+          // set method put (modify)
           this.$.createCampingAjx.method = "PUT";
+          // set url (+ camping id to edit only this campground) here, not in ajax-component because element is for create and edit, to avoid errors
           this.$.createCampingAjx.url = "https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds/" + this.camping.id;
-          console.log("PUT: " + this.$.createCampingAjx.body);
+          // execute put
           this.$.createCampingAjx.generateRequest();
       }
       handleUserResponse(event) {
-        console.log("handleUserResponse!! ");
-
-          console.log("Camping creado/editado!")
+          // error messages
           var textMsg = ""
           if (this.editBlog) {
             var message = {
@@ -214,17 +221,15 @@
                 textMsg: "Camping creado!"
             }
           }
+          // store data (accessibles vía app-data element)
           this.message = message;
           this.camping = null;
-
-          // var response = JSON.parse(event.detail.response);
-          // console.log("crear camping= " + response);
-        this.posts = JSON.parse(event.detail.response)
-        console.log("posts= " + this.posts);
+          this.posts = JSON.parse(event.detail.response);
       }
       handleUserError(event) {
+          //manage error messages
           this.error = event.detail.request.xhr.response;
-          console.log(this.error);
+          this.message = this.error;
       }
     }
 

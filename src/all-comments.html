@@ -10,7 +10,7 @@
   <template>
     <!-- Bootstrap css added here in order to works in all browsers -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+    <!-- custom style -->
     <style include="shared-styles">
       :host {
       display: block;
@@ -41,6 +41,7 @@
           color: white;
       }
     </style>
+    <!-- iron-ajax component -->
     <iron-ajax
         id="manageCommentAjax"
         method = 'PUT'
@@ -50,27 +51,23 @@
         on-response="handleUserResponse"
         on-error="handleUserError">
     </iron-ajax>
+    <!-- app-data used to store information (stored user, camping object, error, message, etc) -->
     <app-data key="camping" data="{{camping}}"></app-data>
     <app-data key="message" data="{{message}}"></app-data>
     <app-data key="userData" data="{{storedUser}}"></app-data>
+    <!-- dom-repeat of all comments array -->
     <template is="dom-repeat" items="[[camping.comments]]">
         <div class="well">
             <div class="row">
                 <span class="pull-right">[[item.author]]</span>
                 <div class="col-md-12">
-                    <!-- <p>[[item.id]]</p> -->
                     <p>[[item.text]]</p>
-                    <!-- <p>[[!item.canView]]</p> -->
+                    <!-- Only the author can view the delete comment button            -->
                     <div hidden$="[[!item.canView]]">
-                        <!-- <div hidden$="[[!canView]]"> -->
-
-                            <!-- <a on-click="editComment" class="btn btn-xs btn-warning edit-form" href="/show-camping">Edit</a> -->
-                            <a on-click="deleteComment"
-                            data-id$="[[item.idComment]]"
-                            data-text$="[[item.text]]"
-                            data-author$="[[item.author]]" class="btn btn-xs btn-danger delete-form" raised on-tap="delete" href="show-camping">Delete</a>
-                            <!-- <delete-comment><delete-comment> -->
-                        <!-- </div>   -->
+                        <a on-click="deleteComment"
+                        data-id$="[[item.idComment]]"
+                        data-text$="[[item.text]]"
+                        data-author$="[[item.author]]" class="btn btn-xs btn-danger delete-form" raised on-tap="delete" href="show-camping">Delete</a>
                     </div>
                 </div>
             </div>
@@ -95,6 +92,7 @@
             type: String,
             value: 'all-comments'
           },
+          //vbles needed
           storedUser: Object,
           message: Object
         };
@@ -110,14 +108,14 @@
               if (obj[key].idComment == idToDelete) {
                   // console.log("me salto este comentario")
               } else {
-                //save data in array
+                //save data in new array
                   miArray.push(obj[key]);
               }
           });
 
-          this.camping.comments = miArray;
-          this.$.manageCommentAjax.body = this.camping;
-          this.$.manageCommentAjax.url ='https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds/' + this.camping.id;
+          this.camping.comments = miArray; //assing new array to comments (no deleted comments are included)
+          this.$.manageCommentAjax.body = this.camping; //object camping set to body
+          this.$.manageCommentAjax.url ='https://api.mlab.com/api/1/databases/yelpcamp2017/collections/campgrounds/' + this.camping.id; //url of one camping (camping who has the comments)
           this.$.manageCommentAjax.generateRequest();
         }
         handleUserResponse() {

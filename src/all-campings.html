@@ -68,17 +68,13 @@
     <p id="topPageElement"></p>
     <div class="container">
         <header class="card">
+          <!-- welcome section -->
             <div class="container">
                 <h1>Welcome to BestCamp!</h1>
                 <p>View our hand-picked campgrounds from all over the world</p>
-                <!-- <p>
-                    <a href="/new-camping" on-click="resetCamping">
-                      <iron-icon icon="my-icons-sm:add-circle"></iron-icon>
-                    </a>
-                    <refresh-campings></refresh-campings>
-                </p> -->
             </div>
         </header>
+        <!-- dom repeat section, display the post in the array -->
         <div class="row text-center" style="display:flex; flex-wrap: wrap;">
           <!-- show all the post from mongoDB, stored in "posts" array -->
             <template is="dom-repeat" items="[[posts]]">
@@ -87,20 +83,14 @@
                         <img src="[[item.image]]">
                         <h1>[[item.name]]</h1>
                         <div class="caption">
-
-                                <h4>[[item.description]]</h4>
-
+                          <h4>[[item.description]]</h4>
                         </div>
                         <p>
-                            <em>Submitted by: [[item.author]]</em>
-                            <p>
-                              <em>rate: [[item.rate]]</em>
-                              <!-- <iron-icon style="color: #CCCC00; size=8" icon="icons:grade"> -->
-                              <iron-icon style="color: #E7F529;" icon="my-icons-sm:star"></iron-icon>
-                            </p>
-
-
-                        </p>
+                          <em>Submitted by: [[item.author]]</em>
+                        <p>
+                          <em>rate: [[item.rate]]</em>
+                          <iron-icon style="color: #E7F529;" icon="my-icons-sm:star"></iron-icon>
+                        <!-- More info button to show one camping-->
                         <p>
                             <a on-click="seleccionado" data-item$="[[item._id.$oid]]"
                              data-name$="[[item.name]]" data-price$="[[item.price]]"
@@ -137,6 +127,7 @@
       static get is() { return 'all-campings'; }
       static get properties() {
         return {
+          // vbles needed
             posts: Array,
             camping: Object,
             message: Object,
@@ -145,85 +136,38 @@
             canView: Object
           }
       }
-      // getPosts(){
-      //   console.log("funcion getPosts");
-      //   this.$.allCampingsAjax.generateRequest();
-      //   this.camping = null;
-      //
-      // }
-      // handlePosts(e,request){
-      //   console.log(request.response);
-      //   // this.set('posts',request.response);
-      //   this.posts = request.response;
-      //   this.message = null;
-      //   this.editBlog = true;
-      //
-      // }
-      resetCamping() {
-        // set camping to null
-        this.camping = {
-            name: "",
-            price: "",
-            image: "",
-            description: "",
-            author: "",
-            url: "",
-            date: ""
-        };
-        console.log(this.storedUser);
-        // if user is not logged in, set vble loggedin = false (could be undefined)
-        if(this.storedUser == ""){
-            this.storedUser = {
-            loggedin: false
-            };
-            console.log("user: " + this.storedUser.loggedin);
-        }
-        this.editBlog = false;
-        console.log("this.editBlog = " + this.editBlog)
-      }
+
+
       seleccionado(event) {
         // en event vienen todos los argumentos pasados desde la llamada como "data-xxx"
         // refactorizado, cuando se crea un camping se asignan comentarios vacíos "[]"
-                //
-                // console.log("comments: " + event.target.dataset.comments);
-                // var comment = event.target.dataset.comments
-                // if(event.target.dataset.comments == undefined) {
-                //     comment = "[]"
-                //     console.log("comentarios vacíos");
-                // }
-                var comment = String;
-                if (event.target.dataset.comments == undefined) {
-                    comment = "[]"
-                } else {
-                      comment = event.target.dataset.comments
-                }
-                // console.log("author: " + event.target.dataset.author);
-
-        //guardar en app-data los datos para mostrar en show-camping
-        this.camping = {
-            id: event.target.dataset.item,
-            name: event.target.dataset.name,
-            price: event.target.dataset.price,
-            image: event.target.dataset.image,
-            description: event.target.dataset.description,
-            author: event.target.dataset.author,
-            url: event.target.dataset.url,
-            date: event.target.dataset.date,
-            latitude: event.target.dataset.latitude,
-            longitude: event.target.dataset.longitude,
-            rate: event.target.dataset.rate,
-            comments: JSON.parse(comment)
-
+            var comment = String;
+            if (event.target.dataset.comments == undefined) {
+                comment = "[]"
+            } else {
+                  comment = event.target.dataset.comments
+            }
+            //guardar en app-data los datos para mostrar en show-camping
+            this.camping = {
+                id: event.target.dataset.item,
+                name: event.target.dataset.name,
+                price: event.target.dataset.price,
+                image: event.target.dataset.image,
+                description: event.target.dataset.description,
+                author: event.target.dataset.author,
+                url: event.target.dataset.url,
+                date: event.target.dataset.date,
+                latitude: event.target.dataset.latitude,
+                longitude: event.target.dataset.longitude,
+                rate: event.target.dataset.rate,
+                comments: JSON.parse(comment)
             }
         //controlo que el usuario logado pueda editar sólo sus comentarios
-        console.log("camping: " + this.camping);
         if ((this.storedUser.name !== undefined)
-                && (event.target.dataset.author === this.storedUser.name)) {
-            // console.log("puede ver!!")
+                && (event.target.dataset.author === this.storedUser.name)) { //si el usuario logado es el autor, marca el camping como editable/borrable
             this.canView = true;
         } else {
             this.canView = false;
-            // console.log("NO puede ver!!")
         }
         //recorro los comentarios y marco los que puede ver el usuario
         var obj = this.camping.comments

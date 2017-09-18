@@ -9,12 +9,11 @@
   <template>
     <!-- Bootstrap css added here in order to works in all browsers -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+    <!-- custom style -->
     <style include="shared-styles">
       :host {
         display: block;
       }
-
     </style>
 
     <!-- Ajax section to recover data from mongoDB vía API -->
@@ -41,8 +40,8 @@
     <app-data key="grants" data="{{canView}}"></app-data>
     <!-- Acces to the error message -->
     <app-data key="message" data="{{message}}"></app-data>
-    
 
+    <!-- Main content (refresh icon) -->
     <a on-click="refresh" href="/all-campings">
       <iron-icon icon="my-icons:refresh"></iron-icon>
     </a>
@@ -61,11 +60,11 @@
       static get is() { return 'refresh-campings'; }
       static get properties() {
         return {
-          posts: Array,
           prop1: {
             type: String,
             value: 'refresh-campings'
           },
+          posts: Array,
           camping: Object,
           message: Object,
           editBlog: Boolean,
@@ -74,22 +73,18 @@
         };
       }
       refresh() {
-          // remove user data
-          console.log("funcion getPosts");
+          // execute get
           this.$.allCampingsAjax.generateRequest();
+          // set object camping = null (because we retrieve all campings again)
           this.camping = null;
       }
       handlePosts(e,request){
-        console.log(request.response);
-        // this.set('posts',request.response);
+        // if everything is ok, store new data (available vía app-data element)
         this.posts = request.response;
         this.message = null;
         this.editBlog = true;
-
-
       }
     }
-
     window.customElements.define(RefreshCampings.is, RefreshCampings);
   </script>
 </dom-module>

@@ -14,7 +14,7 @@
           :host {
               margin: 0;
               padding: 0;
-              
+
           }
 
           a {
@@ -25,16 +25,18 @@
 
       </style>
 
+      <!-- app-data used to store information (stored user, camping object, error, message, etc) -->
       <!-- Access to user logged in -->
       <app-data key="userData" data="{{storedUser}}"></app-data>
 
       <!-- Main content -->
+      <!-- si es llamado desde el formulario muestra el BOTÓN log-out -->
       <template is="dom-if" if="{{!link}}">
           <div>
               <paper-button class="btn btn-lg btn-control btn-primary paper-button" raised on-tap="logout">Log Out</paper-button>
           </div>
       </template>
-
+      <!-- si es llamado desde la barra de navegación, muestra el ICONO de log-out -->
       <template is="dom-if" if="{{link}}">
           <a on-tap="logout" href><span><iron-icon icon="my-icons:exit-to-app"></iron-icon></span></a>
       </template>

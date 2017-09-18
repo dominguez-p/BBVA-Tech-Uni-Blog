@@ -42,6 +42,7 @@
     </template>
 
     <!-- Main content -->
+    <!-- back to previous page -->
     <div class="arrowBack">
       <p></p>
       <a href="/all-campings"><iron-icon style="color: #337ab7;" icon="my-icons:arrow-back"></iron-icon></a>
@@ -49,31 +50,31 @@
 
 
     <div class="card">
-      <!-- If it's NOT a registered user (form with user/password) -->
+      <!-- If it's NOT a registered user ( show form asking user/password) -->
       <div id="unauthenticated" hidden$="[[storedUser.loggedin]]">
         <div class="row">
           <div style="width: 30%; margin: 25px auto">
+            <!-- depends on registring or login -->
             <h1  hidden$="[[signup]]" style="text-align: center">Log In</h1>
             <h1  hidden$="[[!signup]]" style="text-align: center">Sign Up</h1>
             <p><strong><a href="/register-login" on-click="showLogIn">Log in</a></strong> or <strong><a href="/register-login" on-click="showSignUp">sign up</a></strong> to manage campings!</p>
             <div class="form-group">
-              <!-- <label for="username">Username</label> -->
               <iron-input bind-value="{{formData.nombre}}">
                 <input  id="username" type="text" placeholder="username" required="true" autofocus=""></iron-input>
               </iron-input>
             </div>
             <div class="form-group">
-              <!-- <label for="password">Password</label> -->
               <iron-input>
                 <input id="password" type="password" value="{{formData.password::input}}" placeholder="password" required=true></iron-input>
               </iron-input>
             </div>
+            <!-- only ask email if user is signing up -->
             <div class="form-group" hidden$="[[!signup]]">
-                <!-- <label for="email">e-mail</label> -->
               <iron-input>
                 <input id="email" type="email" value="{{formData.email::input}}" placeholder="email" required=""></iron-input>
               </iron-input>
             </div>
+            <!-- show login or signup button, depends on signup vble -->
             <div class="form-group" hidden$="[[signup]]">
                 <paper-button class="btn btn-lg btn-control btn-primary" raised class="primary" on-tap="postLogin">Log In</paper-button>
             </div>
@@ -93,6 +94,7 @@
           <p>You are currently logged in. You can add/modify/delete campings and comments in <a href="/all-campings">all campings</a>!</p>
       </div>
       <div>
+        <!-- log-out button element-->
         <log-out stored-user="{{storedUser}}"></log-out>
       </div>
     </div>
@@ -115,6 +117,7 @@
       static get is() { return 'register-login'; }
       static get properties() {
         return {
+          // vbles needed
           formData: {
             type: Object,
             value: {}
@@ -136,11 +139,13 @@
         this.$.registerLoginAjax.body = this.formData;
       }
       postLogin() {
+        // execute login
         this.$.registerLoginAjax.url = 'http://postgrebc9688.cloudapp.net:3000/api/login';
         this._setReqBody();
         this.$.registerLoginAjax.generateRequest();
       }
       postRegister() {
+        // execute sign up
         this.$.registerLoginAjax.url = 'http://postgrebc9688.cloudapp.net:3000/api/usuarios';
         this._setReqBody();
         this.$.registerLoginAjax.generateRequest();
@@ -154,14 +159,11 @@
       handleUserResponse(event) {
         var success = false;
         var response = JSON.parse(event.detail.response);
-        // console.log("response = " + response);
-        // console.log("signup = " + this.signup);
+
         if (!this.signup) { //si es login
-          if (response.data.count > 0) {
+          if (response.data.count > 0) { // loggin success
             success = true;
-            // redirect to Secret Quotes
-            //this.set('route.path', '/other-quotes')
-          } else {
+          } else { //loggin fail
               this.error="Login incorrecto!"
               // reset form data
               this.formData = {"nombre":"","password":""};
@@ -170,22 +172,25 @@
         } else { //es sign up
           success = true;
         }
-        // console.log("success = " + success);
+        // if success (log in or sign up)
         if (success){
           this.error = '';
+          // keep user in storedUser vble (available vía app-data element)
           this.storedUser = {
                 name: this.formData.nombre,
                 id_token: response.id_token,
                 access_token: response.access_token,
                 loggedin: true
           }
+          // reset vbles
           this.signup = false;
           success = false;
         }
       }
       handleUserError(event) {
+        // manage error message
         this.error = event.detail.request.xhr.response;
-        console.log(this.error);
+        this.message = this.error;
       }
     }
 
